@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/first_page"
+        android:checked="true"
+        android:icon="@drawable/first_menu_icon_selector"
+        android:title="首页" />
+    <item
+        android:id="@+id/i_empty"
+        android:title="" />
+    <item
+        android:id="@+id/my_page"
+        android:icon="@drawable/my_menu_selector"
+        android:title="我的" />
+</menu>

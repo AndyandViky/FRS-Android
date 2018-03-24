@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+        <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
+            android:id="@+id/footer_menu"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:layout_alignParentBottom="true"
+            android:background="@android:color/white"
+            app:itemIconTint="#A9A9A9"
+            app:itemTextColor="#808080"
+            app:menu="@menu/menu"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/key"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:src="@drawable/key"
+            android:tint="@color/actionTitle"
+            app:backgroundTint="@android:color/white"
+            app:borderWidth="0dp"
+            android:layout_marginBottom="15dp"
+            app:elevation="10dp" />
+
+</RelativeLayout>
