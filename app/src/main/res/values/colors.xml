@@ -8,4 +8,5 @@
     <color name="colorBackground">#F7F7F7</color>
     <color name="colorgray">#cccccc</color>
     <color name="colorWite">#ffffff</color>
+    <color name="colorRed">#FF0000</color>
 </resources>

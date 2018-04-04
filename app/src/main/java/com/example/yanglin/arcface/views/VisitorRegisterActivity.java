@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.yanglin.arcface.R;
+import com.example.yanglin.arcface.utils.Enums;
+import com.example.yanglin.arcface.utils.camera.CameraUtil;
 import com.example.yanglin.arcface.utils.systemBar.SystemBarUI;
 import com.example.yanglin.arcface.views.dialog.BottomDialog;
 import com.example.yanglin.arcface.views.dialog.CenterDialog;
@@ -18,7 +20,7 @@ import butterknife.OnClick;
  * Created by yanglin on 18-3-23.
  */
 
-public class VisitorRegisterActivity extends AppCompatActivity implements  CenterDialog.OnCenterItemClickListener, BottomDialog.OnBottomItemClickListener{
+public class VisitorRegisterActivity extends CameraUtil implements  CenterDialog.OnCenterItemClickListener, BottomDialog.OnBottomItemClickListener{
     private CenterDialog centerDialog;
     private BottomDialog bottomDialog;
     @Override
@@ -73,11 +75,11 @@ public class VisitorRegisterActivity extends AppCompatActivity implements  Cente
         switch (view.getId()) {
             case R.id.photo_dialog_camera:
                 dialog.dismiss();
-                Toast.makeText(VisitorRegisterActivity.this, "相机", Toast.LENGTH_SHORT).show();
+                this.openCamera(Enums.Camera.UPLOADVISITOR);
                 break;
             case R.id.photo_dialog_photo:
                 dialog.dismiss();
-                Toast.makeText(VisitorRegisterActivity.this, "相册", Toast.LENGTH_SHORT).show();
+                this.openAlbum(Enums.Camera.UPLOADVISITOR);
                 break;
             case R.id.photo_dialog_cancel:
                 dialog.dismiss();

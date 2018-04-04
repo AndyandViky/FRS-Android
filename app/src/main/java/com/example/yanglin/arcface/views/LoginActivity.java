@@ -46,6 +46,7 @@ public class LoginActivity extends AppCompatActivity{
             } else {
                 Toast.makeText(LoginActivity.this, "登录成功",Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                LoginActivity.this.finish();
             }
         }
     }

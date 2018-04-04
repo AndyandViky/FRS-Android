@@ -28,9 +28,9 @@ import butterknife.OnClick;
 public class RoomRecordActivity extends AppCompatActivity {
     @BindView(R.id.record_list)
     RecyclerView recordRecyclerView;
-    int types[] = {1, 2, 1, 2, 2, 1, 1};
-    String times[] = {"2018-10-10 12:20:10", "2018-10-10 12:20:10", "2018-10-10 12:20:10", "2018-10-10 12:20:10", "2018-10-10 12:20:10", "2018-10-10 12:20:10", "2018-10-10 12:20:10"};
-    int peopleCounts[] = {3, 2, 1, 3, 2, 1, 5};
+    int types[] = {1, 2, 1, 2, 2, 1, 1, 1, 2};
+    String times[] = {"2018-10-10 12:20:10", "2018-10-10 12:20:10", "2018-10-10 12:20:10", "2018-10-10 12:20:10", "2018-10-10 12:20:10", "2018-10-10 12:20:10", "2018-10-10 12:20:10", "2018-10-10 12:20:10", "2018-10-10 12:20:10"};
+    int peopleCounts[] = {3, 2, 1, 3, 2, 1, 5, 1, 1};
     List<Record> recordList = new ArrayList<>();
     int currentPosition;
     @Override

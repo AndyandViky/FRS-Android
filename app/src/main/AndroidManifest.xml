@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.yanglin.arcface">
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -17,6 +18,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <provider
+            android:authorities="com.gyq.cameraalbumtest.fileprovider"
+            android:name="android.support.v4.content.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+        </provider>
         <activity android:name=".views.MainActivity">
         </activity>
         <activity android:name=".views.AboutActivity">
@@ -36,6 +45,16 @@
         <activity android:name=".views.VisitorActivity">
         </activity>
         <activity android:name=".views.VisitorRegisterActivity">
+        </activity>
+        <activity android:name=".views.FaceImageActivity">
+        </activity>
+        <activity android:name=".views.InfoActivity">
+        </activity>
+        <activity android:name=".views.CommunityActivity">
+        </activity>
+        <activity android:name=".views.InfoDetailActivity">
+        </activity>
+        <activity android:name=".views.CommunityTrendsDetailActivity">
         </activity>
     </application>
 

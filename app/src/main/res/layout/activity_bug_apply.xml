@@ -133,6 +133,7 @@
                 android:paddingRight="20dp"
                 android:paddingLeft="10dp"
                 android:gravity="center"
+                android:textColor="#666"
                 android:textSize="14sp"
                 android:background="@null"
                 android:hint="不超过30个汉字"

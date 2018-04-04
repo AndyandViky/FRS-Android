@@ -2,10 +2,8 @@ package com.example.yanglin.arcface.views.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +11,10 @@ import android.view.ViewGroup;
 import com.example.yanglin.arcface.R;
 import com.example.yanglin.arcface.views.AboutActivity;
 import com.example.yanglin.arcface.views.ChangeUserInfoActivity;
+import com.example.yanglin.arcface.views.CommunityActivity;
 import com.example.yanglin.arcface.views.FaceImageActivity;
-import com.example.yanglin.arcface.views.MainActivity;
+import com.example.yanglin.arcface.views.InfoActivity;
 import com.example.yanglin.arcface.views.UpdatePwdActivity;
-
-import java.time.Instant;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -67,4 +64,15 @@ public class MyFragment extends Fragment{
         startActivity(intent);
     }
 
+    @OnClick(R.id.info_center)
+    void getInfo() {
+        Intent intent = new Intent(getActivity(), InfoActivity.class);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.comunity_info)
+    void getCommunity() {
+        Intent intent = new Intent(getActivity(), CommunityActivity.class);
+        startActivity(intent);
+    }
 }
