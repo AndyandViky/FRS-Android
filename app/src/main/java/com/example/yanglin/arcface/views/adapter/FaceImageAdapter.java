@@ -59,7 +59,7 @@ public class FaceImageAdapter extends RecyclerView.Adapter<FaceImageAdapter.Face
 
         //将position保存在itemView的Tag中，以便点击时进行获取
         holder.itemView.setTag(position);
-        holder.faceImage.setImageResource(R.mipmap.community);
+        holder.faceImage.setImageResource(faceImage.getImage());
     }
 
     /**

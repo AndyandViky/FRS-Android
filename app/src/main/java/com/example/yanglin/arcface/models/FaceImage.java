@@ -5,15 +5,15 @@ package com.example.yanglin.arcface.models;
  */
 
 public class FaceImage {
-    String image;
+    int image;
 
-    public FaceImage(String image) {
+    public FaceImage(int image) {
         this.image = image;
     }
-    public String getImage() {
+    public int getImage() {
         return this.image;
     }
-    public void setImage(String image) {
+    public void setImage(int image) {
         this.image = image;
     }
 

@@ -29,8 +29,8 @@ public class RoomRecordActivity extends AppCompatActivity {
     @BindView(R.id.record_list)
     RecyclerView recordRecyclerView;
     int types[] = {1, 2, 1, 2, 2, 1, 1, 1, 2};
-    String times[] = {"2018-10-10 12:20:10", "2018-10-10 12:20:10", "2018-10-10 12:20:10", "2018-10-10 12:20:10", "2018-10-10 12:20:10", "2018-10-10 12:20:10", "2018-10-10 12:20:10", "2018-10-10 12:20:10", "2018-10-10 12:20:10"};
-    int peopleCounts[] = {3, 2, 1, 3, 2, 1, 5, 1, 1};
+    String times[] = {"2018-4-5 17:22:16", "2018-4-6 8:13:11", "2018-4-6 12:20:10", "2018-4-7 10:55:22", "2018-4-7 10:55:12", "2018-4-7 15:20:22", "2018-4-8 09:12:55", "2018-4-10 10:23:44", "2018-4-10 12:33:44"};
+    int peopleCounts[] = {3, 2, 1, 3, 2, 1, 2, 1, 1};
     List<Record> recordList = new ArrayList<>();
     int currentPosition;
     @Override

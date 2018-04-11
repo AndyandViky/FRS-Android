@@ -50,7 +50,6 @@
             android:gravity="center"
             android:textSize="14sp"
             android:hint="请输入姓名"
-            android:text="杨林"
             />
     </RelativeLayout>
     <View
@@ -80,7 +79,6 @@
             android:textColor="#666"
             android:hint="请输入性别"
             android:textSize="14sp"
-            android:text="男"
             />
     </RelativeLayout>
     <View
@@ -107,10 +105,10 @@
             android:paddingRight="20dp"
             android:paddingLeft="10dp"
             android:gravity="center"
+            android:inputType="number"
             android:hint="请输入年龄"
             android:background="@null"
             android:textSize="14sp"
-            android:text="20"
             />
     </RelativeLayout>
     <View
@@ -166,9 +164,39 @@
             android:paddingLeft="10dp"
             android:gravity="center"
             android:textSize="14sp"
+            android:inputType="number"
             android:textColor="#666"
             android:background="@null"
             android:hint="最大60天"
+            />
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorBorder"></View>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        >
+        <TextView
+            android:id="@+id/visitor_reason_label"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="访问原因: "
+            android:gravity="center"
+            android:textColor="#333333"
+            android:paddingLeft="20dp"
+            />
+        <EditText
+            android:id="@+id/visitor_reason"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:textColor="#666"
+            android:textSize="14sp"
+            android:background="@null"
+            android:layout_toRightOf="@+id/visitor_reason_label"
             />
     </RelativeLayout>
     <View

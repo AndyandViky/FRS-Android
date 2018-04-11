@@ -5,14 +5,14 @@ package com.example.yanglin.arcface.models;
  */
 
 public class Community {
-    String image;
+    int image;
     String title;
     String content;
     String time;
     String tag;
     String category;
 
-    public Community(String image, String title, String content, String time, String tag, String category) {
+    public Community(int image, String title, String content, String time, String tag, String category) {
         this.image = image;
         this.title = title;
         this.time = time;
@@ -20,10 +20,10 @@ public class Community {
         this.tag = tag;
         this.category = category;
     }
-    public String getImage() {
+    public int getImage() {
         return this.image;
     }
-    public void setImage(String image) {
+    public void setImage(int image) {
         this.image = image;
     }
 

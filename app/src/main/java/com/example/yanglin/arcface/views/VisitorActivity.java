@@ -45,8 +45,15 @@ public class VisitorActivity extends AppCompatActivity {
     int borderColor = 0xff48D1CC;
 
     List<Visitor> visitorList = new ArrayList<>();
+    VisitorAdapter visitorAdapter;
     @BindView(R.id.visitor_list)
     RecyclerView visitorListView;
+
+    String names[] = {"王安", "陈建周", "杨欣", "陈安仁", "陈建国"};
+    String reasons[] = {"好友来访", "亲戚拜访", "业务洽谈", "好友来访", "好友来访"};
+    String phones[] = {"17805850721", "178058520285", "17805852085", "13368124684", "17857503919"};
+    int types[] = {0, 0, 0, 1, 1};
+    String times[] = {"2018-4-5 17:22:16", "2018-4-6 8:13:11", "2018-4-6 12:20:10", "2018-4-7 10:55:22", "2018-4-7 10:55:12"};
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,9 +62,9 @@ public class VisitorActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         SystemBarUI.initSystemBar(this, R.color.actionTitle);
 
-        visitorList = DataUtil.getVisitor();
+        visitorList = DataUtil.getVisitor(types, reasons, times, names, phones);
         visitorListView.setLayoutManager(new LinearLayoutManager(this));
-        VisitorAdapter visitorAdapter = new VisitorAdapter(this, visitorList);
+        visitorAdapter = new VisitorAdapter(this, visitorList);
         visitorAdapter.setOnItemClickListener(new VisitorAdapter.OnItemClickListener() {
 
             @Override
@@ -76,18 +83,36 @@ public class VisitorActivity extends AppCompatActivity {
 
     @OnClick(R.id.visitor_all)
     void clickAll() {
+        visitorAdapter = new VisitorAdapter(this, visitorList);
+        visitorListView.setAdapter(visitorAdapter);
         clearStyle();
         textAll.setTextColor(borderColor);
         borderAll.setBackgroundColor(borderColor);
     }
     @OnClick(R.id.visitor_wait_pass)
     void clickWaitPass() {
+        ArrayList<Visitor> visitors = new ArrayList<>();
+        for(int i=0; i<visitorList.size(); i++) {
+            if (visitorList.get(i).getType() == 0) {
+                visitors.add((visitorList.get(i)));
+            }
+        }
+        visitorAdapter = new VisitorAdapter(this, visitors);
+        visitorListView.setAdapter(visitorAdapter);
         clearStyle();
         textWait.setTextColor(borderColor);
         borderWait.setBackgroundColor(borderColor);
     }
     @OnClick(R.id.visitor_passed)
     void clickPassed() {
+        ArrayList<Visitor> visitors = new ArrayList<>();
+        for(int i=0; i<visitorList.size(); i++) {
+            if (visitorList.get(i).getType() == 1) {
+                visitors.add((visitorList.get(i)));
+            }
+        }
+        visitorAdapter = new VisitorAdapter(this, visitors);
+        visitorListView.setAdapter(visitorAdapter);
         clearStyle();
         textPassed.setTextColor(borderColor);
         borderPassed.setBackgroundColor(borderColor);

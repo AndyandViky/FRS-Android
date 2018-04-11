@@ -15,6 +15,8 @@ import com.example.yanglin.arcface.models.Community;
 import com.example.yanglin.arcface.models.Info;
 import com.example.yanglin.arcface.models.Record;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 import butterknife.BindView;
@@ -64,8 +66,10 @@ public class CommunityAdapter extends RecyclerView.Adapter<CommunityViewHolder> 
 
         //将position保存在itemView的Tag中，以便点击时进行获取
         holder.itemView.setTag(position);
-        holder.infoImage.setImageResource(R.mipmap.community);
+        holder.infoImage.setImageResource(community.getImage());
         holder.infoTitle.setText(community.getTitle());
+        holder.infoType.setText(community.getCategory());
+        holder.infoTag1.setText(community.getTag());
     }
 
     /**
@@ -95,6 +99,12 @@ class CommunityViewHolder extends RecyclerView.ViewHolder{
     ImageView infoImage;
     @BindView(R.id.commmunity_title)
     TextView infoTitle;
+    @BindView(R.id.article_type)
+    TextView infoType;
+    @BindView(R.id.article_tags1)
+    TextView infoTag1;
+    @BindView(R.id.article_tags2)
+    TextView getInfoTag2;
     public CommunityViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);

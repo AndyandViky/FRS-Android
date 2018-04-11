@@ -33,11 +33,12 @@ public class CommunityActivity extends AppCompatActivity {
     RecyclerView communityRecycleView;
     List<Community> communityList = new ArrayList<>();
 
-    String titles[] = {"中国人脸门禁排名再次更新, 我们光荣上榜.", "中国人脸门禁排名再次更新, 我们光荣上榜.", "中国人脸门禁排名再次更新, 我们光荣上榜."};
+    int images[] = {R.mipmap.article1, R.mipmap.article2, R.mipmap.article3};
+    String titles[] = {"中国人脸门禁排名再次更新, 我们光荣上榜.", "12月20日幸福花园小区将要举办第3届运动会", "有人在15幢322拾到一把钥匙, 请丢失人到门卫处领取"};
     String contents[] = {"登录通知: 登录通知登录通知登录通知登录通知", "天空一号坠毁: 天空一号坠毁天空一号坠毁天空一号坠毁", ""};
     String times[] = {"12月20日", "12月20日", ""};
-    String tags[] = {"正常通知", "新闻通知", ""};
-    String categorys[] = {"通知", "通知", ""};
+    String tags[] = {"新闻", "", ""};
+    String categorys[] = {"普通文章", "小区动态", "失误招领"};
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +46,7 @@ public class CommunityActivity extends AppCompatActivity {
         SystemBarUI.initSystemBar(this, R.color.actionTitle);
         ButterKnife.bind(this);
 
-        communityList = DataUtil.getCommunity(titles, contents, times, tags, categorys);
+        communityList = DataUtil.getCommunity(images, titles, contents, times, tags, categorys);
         communityRecycleView.setLayoutManager(new LinearLayoutManager(this));
         CommunityAdapter communityAdapter = new CommunityAdapter(this, communityList);
         communityAdapter.setOnItemClickListener(new CommunityAdapter.OnItemClickListener() {

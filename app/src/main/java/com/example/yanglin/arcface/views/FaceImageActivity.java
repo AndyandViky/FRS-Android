@@ -55,6 +55,7 @@ public class FaceImageActivity extends CameraUtil implements  CenterDialog.OnCen
     RecyclerView faceImageRecycleView;
     List<FaceImage> faceImageList = new ArrayList<>();
 
+    int images[] = {R.mipmap.face2, R.mipmap.face4};
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,8 +70,8 @@ public class FaceImageActivity extends CameraUtil implements  CenterDialog.OnCen
         ButterKnife.bind(this);
         SystemBarUI.initSystemBar(this, R.color.actionTitle);
 
-        for(int i=0; i<5; i++) {
-            FaceImage faceImage = new FaceImage("");
+        for(int i=0; i<images.length; i++) {
+            FaceImage faceImage = new FaceImage(images[i]);
             faceImageList.add(faceImage);
         }
         faceImageRecycleView.setLayoutManager(new LinearLayoutManager(this));

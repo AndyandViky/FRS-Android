@@ -11,19 +11,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.yanglin.arcface.R;
+import com.example.yanglin.arcface.controllers.NoticeCtrl;
 import com.example.yanglin.arcface.models.Info;
-import com.example.yanglin.arcface.models.Record;
-import com.example.yanglin.arcface.utils.data.DataUtil;
+import com.example.yanglin.arcface.utils.OkhttpService;
 import com.example.yanglin.arcface.utils.systemBar.SystemBarUI;
 import com.example.yanglin.arcface.views.adapter.InfoListAdapter;
-import com.example.yanglin.arcface.views.adapter.RecordListAdapter;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.OkHttpClient;
 
 /**
  * Created by yanglin on 18-3-31.
@@ -47,11 +49,9 @@ public class InfoActivity extends AppCompatActivity {
 
     @BindView(R.id.info_list)
     RecyclerView infoRecyclerView;
-    List<Info> infoList = new ArrayList<>();
-
-    String titles[] = {"登录通知", "天空一号坠毁"};
-    String contents[] = {"登录通知: 登录通知登录通知登录通知登录通知", "天空一号坠毁: 天空一号坠毁天空一号坠毁天空一号坠毁"};
-    String times[] = {"12月20日", "12月20日"};
+    Info info;
+    InfoListAdapter infoListAdapter;
+    OkHttpClient okHttpClient = new OkHttpClient();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,10 +59,9 @@ public class InfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_info);
         SystemBarUI.initSystemBar(this, R.color.actionTitle);
         ButterKnife.bind(this);
-
-        infoList = DataUtil.getInfo(titles, contents, times);
         infoRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        InfoListAdapter infoListAdapter = new InfoListAdapter(this, infoList);
+
+        infoListAdapter = new InfoListAdapter(InfoActivity.this, new ArrayList<Info.DataBean.DatasBean>());
         infoListAdapter.setOnItemClickListener(new InfoListAdapter.OnItemClickListener() {
 
             @Override
@@ -71,7 +70,29 @@ public class InfoActivity extends AppCompatActivity {
                 Toast.makeText(InfoActivity.this,String.valueOf(position),Toast.LENGTH_SHORT).show();
             }
         });
+
         infoRecyclerView.setAdapter(infoListAdapter);
+
+        NoticeCtrl noticeCtrl = new NoticeCtrl();
+        noticeCtrl.getNotice(okHttpClient, 1, 10, -1, new OkhttpService.OnResponseListener() {
+            @Override
+            public void onSuccess(String result) {
+                Gson gson = new Gson();
+                java.lang.reflect.Type type = new TypeToken<Info>() {}.getType();
+                info = gson.fromJson(result, type);
+                infoRecyclerView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        infoListAdapter.replace(info.getData().getDatas());
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(IOException error) {
+
+            }
+        });
     }
 
     @OnClick(R.id.info_back)
@@ -81,18 +102,33 @@ public class InfoActivity extends AppCompatActivity {
 
     @OnClick(R.id.info_all)
     void clickAll() {
+        infoListAdapter.replace(info.getData().getDatas());
         clearStyle();
         textAll.setTextColor(borderColor);
         borderAll.setBackgroundColor(borderColor);
     }
     @OnClick(R.id.info_wait_read)
     void clickWaitPass() {
+        ArrayList<Info.DataBean.DatasBean> infos = new ArrayList<>();
+        for(int i=0; i<info.getData().getDatas().size(); i++) {
+            if (info.getData().getDatas().get(i).getStatus() == 1) {
+                infos.add(info.getData().getDatas().get(i));
+            }
+        }
+        infoListAdapter.replace(infos);
         clearStyle();
         textWait.setTextColor(borderColor);
         borderWait.setBackgroundColor(borderColor);
     }
     @OnClick(R.id.info_read)
     void clickPassed() {
+        ArrayList<Info.DataBean.DatasBean> infos = new ArrayList<>();
+        for(int i=0; i<info.getData().getDatas().size(); i++) {
+            if (info.getData().getDatas().get(i).getStatus() == 0) {
+                infos.add(info.getData().getDatas().get(i));
+            }
+        }
+        infoListAdapter.replace(infos);
         clearStyle();
         textPassed.setTextColor(borderColor);
         borderPassed.setBackgroundColor(borderColor);

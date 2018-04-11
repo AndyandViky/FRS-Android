@@ -13,7 +13,9 @@ import android.widget.Toast;
 import com.example.yanglin.arcface.R;
 import com.example.yanglin.arcface.models.Record;
 import com.example.yanglin.arcface.models.Visitor;
+import com.example.yanglin.arcface.views.ApplyBugActivity;
 import com.example.yanglin.arcface.views.VisitorActivity;
+import com.example.yanglin.arcface.views.dialog.CenterDialog;
 
 import java.util.List;
 
@@ -101,8 +103,8 @@ public class VisitorAdapter extends RecyclerView.Adapter<VisitorViewHolder> impl
 }
 
 // 自定义viewhodel
-class VisitorViewHolder extends RecyclerView.ViewHolder{
-
+class VisitorViewHolder extends RecyclerView.ViewHolder implements CenterDialog.OnCenterItemClickListener{
+    private CenterDialog centerDialog;
     @BindView(R.id.apply_year_month)
     TextView yearM;
     @BindView(R.id.apply_time)
@@ -119,15 +121,35 @@ class VisitorViewHolder extends RecyclerView.ViewHolder{
         super(itemView);
         ButterKnife.bind(this, itemView);
 
+        centerDialog = new CenterDialog(itemView.getContext(), R.layout.confirm_dialog,
+                new int[]{R.id.dialog_cancel, R.id.dialog_sure});
+        centerDialog.setOnCenterItemClickListener(this);
+
         statusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String type = statusButton.getText().toString();
                 if(type!= null && type.equals("审核")) {
                     int i = getAdapterPosition();
-                    Toast.makeText(itemView.getContext(), String.valueOf(i), Toast.LENGTH_SHORT).show();
+                    centerDialog.show();
                 }
             }
         });
+    }
+
+    @Override
+    public void OnCenterItemClick(CenterDialog dialog, View view) {
+        switch (view.getId()) {
+            case R.id.dialog_sure:
+                dialog.dismiss();
+                Toast.makeText(view.getContext(), "审核成功", Toast.LENGTH_SHORT).show();
+                statusButton.setText("已审核");
+                break;
+            case R.id.dialog_cancel:
+                dialog.dismiss();
+                break;
+            default:
+                break;
+        }
     }
 }

@@ -1,0 +1,20 @@
+package com.example.yanglin.arcface.controllers;
+
+import com.example.yanglin.arcface.utils.OkhttpService;
+
+import okhttp3.OkHttpClient;
+
+/**
+ * Created by yanglin on 18-4-10.
+ */
+
+public class NoticeCtrl extends OkhttpService{
+
+    public void getNotice(OkHttpClient okHttpClient, int pageNo, int pageSize, int status, OnResponseListener listener) {
+        String url = "/notices?pageNo="+pageNo+"&pageSize="+pageSize;
+        if (status != -1) {
+            url = url + "&status=" + status;
+        }
+        this.doGet(okHttpClient, url, listener);
+    }
+}

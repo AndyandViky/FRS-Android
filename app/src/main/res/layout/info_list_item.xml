@@ -39,6 +39,7 @@
                     android:id="@+id/info_time"
                     android:layout_width="100dp"
                     android:layout_height="30dp"
+                    android:paddingRight="10dp"
                     android:text="12月20日"
                     android:gravity="center"
                     />

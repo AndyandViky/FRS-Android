@@ -30,8 +30,8 @@ public class InfoListAdapter extends RecyclerView.Adapter<InfoViewHolder> implem
     }
 
     protected Context context;
-    protected List<Info> InfoList;
-    public InfoListAdapter(Context context, List<Info> InfoList){
+    protected List<Info.DataBean.DatasBean> InfoList;
+    public InfoListAdapter(Context context, List<Info.DataBean.DatasBean> InfoList){
         this.context = context;
         this.InfoList = InfoList;
     }
@@ -49,6 +49,12 @@ public class InfoListAdapter extends RecyclerView.Adapter<InfoViewHolder> implem
         return vn;
     }
 
+    public void replace( List<Info.DataBean.DatasBean> list){
+        this.InfoList.clear();
+        this.InfoList.addAll(list);
+        notifyDataSetChanged();
+    }
+
 
     /**
      * 绑定数据到hodel
@@ -57,15 +63,14 @@ public class InfoListAdapter extends RecyclerView.Adapter<InfoViewHolder> implem
      */
     @Override
     public void onBindViewHolder(InfoViewHolder holder, int position) {
-        Info info = InfoList.get(position); // 获取menu item
-        // 数据传入
+        Info.DataBean.DatasBean info = InfoList.get(position); // 获取menu item
 
         //将position保存在itemView的Tag中，以便点击时进行获取
         holder.itemView.setTag(position);
         holder.infoImage.setImageResource(R.mipmap.clock);
         holder.infoTitle.setText(info.getTitle());
         holder.infoContent.setText(info.getContent());
-        holder.infoTime.setText(info.getTime());
+        holder.infoTime.setText(info.getCreated_at().substring(0, 10));
     }
 
     /**

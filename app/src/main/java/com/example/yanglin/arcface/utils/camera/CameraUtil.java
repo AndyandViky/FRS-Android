@@ -20,10 +20,19 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import com.example.yanglin.arcface.controllers.AttachmentCtrl;
+import com.example.yanglin.arcface.models.Attachment;
+import com.example.yanglin.arcface.models.BaseResponse;
 import com.example.yanglin.arcface.utils.Enums;
+import com.example.yanglin.arcface.utils.OkhttpService;
 import com.example.yanglin.arcface.views.FaceImageActivity;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
+import java.io.IOException;
+
+import okhttp3.OkHttpClient;
 
 /**
  * Created by yanglin on 18-4-3.
@@ -34,6 +43,8 @@ public class CameraUtil extends AppCompatActivity{
     private static final int TAKE_PHOTO = 1;
     public static final int CHOOSE_PHOTO = 2;
     private Enums.Camera type;
+    private String imageUrl = "";
+    AttachmentCtrl attachmentCtrl = new AttachmentCtrl();
 
     protected void openCamera(Enums.Camera type) {
         this.type = type;
@@ -49,7 +60,6 @@ public class CameraUtil extends AppCompatActivity{
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         if (Build.VERSION.SDK_INT >= 24) {
             imageUri = FileProvider.getUriForFile(this,
                     "com.gyq.cameraalbumtest.fileprovider", outputImage);
@@ -98,7 +108,39 @@ public class CameraUtil extends AppCompatActivity{
             case TAKE_PHOTO:
                 if (resultCode == RESULT_OK) {
                     try {
-                        Bitmap bm = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
+                        attachmentCtrl.uploadImage(imageUri.getPath(), new OkhttpService.OnResponseListener() {
+                            @Override
+                            public void onSuccess(String result) {
+                                java.lang.reflect.Type type = new TypeToken<Attachment>() {}.getType();
+                                final Attachment attachment = new Gson().fromJson(result, type);
+                                if (attachment.getCode() != 1) {
+                                    (CameraUtil.this).runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(CameraUtil.this, attachment.getMsg(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                    return;
+                                }
+                                CameraUtil.this.imageUrl = attachment.getData().getPath();
+                                (CameraUtil.this).runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(CameraUtil.this, "上传成功", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void onFailure(IOException error) {
+                                (CameraUtil.this).runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(CameraUtil.this, "上传失败", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        });
                         switch (this.type) {
                             case UPLOADFACE:
                                 break;
@@ -178,7 +220,39 @@ public class CameraUtil extends AppCompatActivity{
     }
     private void displayImage(String imagePath) {
         if (imagePath != null) {
-            Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+            attachmentCtrl.uploadImage(imagePath, new OkhttpService.OnResponseListener() {
+                @Override
+                public void onSuccess(String result) {
+                    java.lang.reflect.Type type = new TypeToken<Attachment>() {}.getType();
+                    final Attachment attachment = new Gson().fromJson(result, type);
+                    if (attachment.getCode() != 1) {
+                        (CameraUtil.this).runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(CameraUtil.this, attachment.getMsg(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        return;
+                    }
+                    CameraUtil.this.imageUrl = attachment.getData().getPath();
+                    (CameraUtil.this).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(CameraUtil.this, "上传成功", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+
+                @Override
+                public void onFailure(IOException error) {
+                    (CameraUtil.this).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(CameraUtil.this, "上传失败", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            });
             switch (this.type) {
                 case UPLOADFACE:
                     break;
@@ -194,6 +268,17 @@ public class CameraUtil extends AppCompatActivity{
         } else {
             Toast.makeText(this, "failed to get image", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    protected String getPath() {
+        if (imageUrl != "") {
+            return imageUrl;
+        }
+        return null;
+    }
+
+    protected void deltePath() {
+        imageUrl = "";
     }
 
 }

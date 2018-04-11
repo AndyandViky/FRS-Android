@@ -53,7 +53,7 @@
                 android:paddingLeft="10dp"
                 android:gravity="center"
                 android:textSize="14sp"
-                android:text="杭州市下城区金化街道幸福小区"
+                android:text="绍兴市越城区幸福小区"
                 />
         </RelativeLayout>
         <View
@@ -119,6 +119,7 @@
             android:layout_height="50dp"
             >
             <TextView
+                android:id="@+id/bug_content_label"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="故障内容: "
@@ -130,13 +131,12 @@
                 android:id="@+id/bug_content"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingRight="20dp"
-                android:paddingLeft="10dp"
-                android:gravity="center"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
                 android:textColor="#666"
                 android:textSize="14sp"
                 android:background="@null"
-                android:hint="不超过30个汉字"
+                android:layout_toRightOf="@+id/bug_content_label"
                 />
         </RelativeLayout>
         <View

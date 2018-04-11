@@ -5,12 +5,23 @@
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <!--轮播图-->
-    <android.support.v4.view.ViewPager
-        android:id="@+id/page_ad"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="170dp"
-        android:background="#C0C0C0">
-    </android.support.v4.view.ViewPager>
+        android:layout_height="170dp">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/page_ad"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#C0C0C0"/>
+
+
+        <com.shizhefei.view.indicator.FixedIndicatorView
+            android:id="@+id/banner_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_gravity="right|bottom" />
+    </FrameLayout>
 
     <!--主体功能-->
     <LinearLayout
