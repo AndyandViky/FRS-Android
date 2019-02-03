@@ -30,8 +30,8 @@ public class OkhttpService {
 
     MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     public static final String TAG = "1";
-    private String basePath = "http://192.168.1.115:8000";
-    private String auth = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZWxmSWQiOjIsImlhdCI6MTUyMzM3NDU3MSwiZXhwIjoxNTI0MjM4NTcxfQ.XaM3w7L-iaAxBrZwDl8t5i_YM1DBs8RiIar-QIWZkKk";
+    private String basePath = "http://localhost:8000/visitor";
+    private String auth = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZWxmSWQiOjIsInR5cGUiOjIsImlhdCI6MTU0OTE5ODk3MywiZXhwIjoxNTUwMDYyOTczfQ.Noqmra59P-j-YikMSWltRM_By8ry4ucgDP0ErRXyJiE";
     protected String doGet(OkHttpClient okHttpClient, String url, final OnResponseListener listener) {
         url = basePath+url;
         Request request = new Request.Builder()
