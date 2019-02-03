@@ -92,7 +92,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="杨霖"
+                        android:text="小杨"
                         android:textColor="#555555"
                         android:layout_alignParentRight="true"/>
                 </RelativeLayout>

@@ -115,17 +115,17 @@ public class VisitorRegisterActivity extends CameraUtil implements  CenterDialog
                 userCtrl.applyVisitor(okHttpClient, data, new OkhttpService.OnResponseListener() {
                     @Override
                     public void onSuccess(String result) {
-                        java.lang.reflect.Type type = new TypeToken<BaseResponse>() {}.getType();
-                        final BaseResponse baseResponse = new Gson().fromJson(result, type);
-                        if (baseResponse.getCode() != 1) {
-                            (VisitorRegisterActivity.this).runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(VisitorRegisterActivity.this, baseResponse.getMsg(), Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                            return;
-                        }
+//                        java.lang.reflect.Type type = new TypeToken<BaseResponse>() {}.getType();
+//                        final BaseResponse baseResponse = new Gson().fromJson(result, type);
+//                        if (baseResponse.getCode() != 1) {
+//                            (VisitorRegisterActivity.this).runOnUiThread(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    Toast.makeText(VisitorRegisterActivity.this, baseResponse.getMsg(), Toast.LENGTH_SHORT).show();
+//                                }
+//                            });
+//                            return;
+//                        }
                         VisitorRegisterActivity.this.deltePath();
                         (VisitorRegisterActivity.this).runOnUiThread(new Runnable() {
                             @Override
@@ -133,6 +133,7 @@ public class VisitorRegisterActivity extends CameraUtil implements  CenterDialog
                                 Toast.makeText(VisitorRegisterActivity.this, "提交成功", Toast.LENGTH_SHORT).show();
                             }
                         });
+                        VisitorRegisterActivity.this.finish();
                     }
 
                     @Override

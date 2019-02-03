@@ -88,7 +88,7 @@
                 android:textSize="14sp"
                 android:background="@null"
                 android:hint="姓名"
-                android:text="杨林"
+                android:text="小楊"
                 />
         </RelativeLayout>
 

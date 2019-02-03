@@ -13,4 +13,9 @@ public class UserCtrl extends OkhttpService{
         String url = "/visitor";
         this.doPost(okHttpClient, url, data, listener);
     }
+
+    public void openDoor(OkHttpClient okHttpClient, String data, OnResponseListener listener) {
+        String url = "/open/door";
+        this.doPost(okHttpClient, url, data, listener);
+    }
 }

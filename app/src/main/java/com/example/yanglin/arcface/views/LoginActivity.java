@@ -41,7 +41,7 @@ public class LoginActivity extends AppCompatActivity{
             Toast.makeText(LoginActivity.this, "帐号或密码不能未空",Toast.LENGTH_SHORT).show();
         }
         else{
-            if (!name.equals("123456") || !pwd.equals("123456")) {
+            if (!name.equals("17805850721") || !pwd.equals("123456")) {
                 Toast.makeText(LoginActivity.this, "密码错误",Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(LoginActivity.this, "登录成功",Toast.LENGTH_SHORT).show();
@@ -49,19 +49,5 @@ public class LoginActivity extends AppCompatActivity{
                 LoginActivity.this.finish();
             }
         }
-    }
-
-    @OnClick(R.id.login_register)
-    void toRegister() {
-        Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-        intent.putExtra("type", "1");
-        startActivity(intent);
-    }
-
-    @OnClick(R.id.login_forget_pwd)
-    void toForgetPwd() {
-        Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-        intent.putExtra("type", "2");
-        startActivity(intent);
     }
 }

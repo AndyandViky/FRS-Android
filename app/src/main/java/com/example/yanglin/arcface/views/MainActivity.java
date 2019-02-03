@@ -10,22 +10,31 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.yanglin.arcface.R;
+import com.example.yanglin.arcface.controllers.UserCtrl;
+import com.example.yanglin.arcface.models.BaseResponse;
+import com.example.yanglin.arcface.utils.OkhttpService;
 import com.example.yanglin.arcface.utils.systemBar.SystemBarUI;
 import com.example.yanglin.arcface.views.dialog.BottomDialog;
 import com.example.yanglin.arcface.views.dialog.CenterDialog;
 import com.example.yanglin.arcface.views.fragment.MainFragment;
 import com.example.yanglin.arcface.views.fragment.MyFragment;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
+import java.io.IOException;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.OkHttpClient;
 import pub.devrel.easypermissions.EasyPermissions;
 import pub.devrel.easypermissions.PermissionRequest;
 
@@ -40,11 +49,15 @@ public class MainActivity extends AppCompatActivity  implements CenterDialog.OnC
     @BindView(R.id.title_text)
     TextView titleText;
 
+    EditText passwordD;
+
     private CenterDialog centerDialog;
 
     MainFragment mainFragment = new MainFragment();
     MyFragment myFragment = new MyFragment();
 
+    OkHttpClient okHttpClient = new OkHttpClient();
+    UserCtrl userCtrl = new UserCtrl();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +74,7 @@ public class MainActivity extends AppCompatActivity  implements CenterDialog.OnC
         centerDialog = new CenterDialog(this, R.layout.password_dialog,
                 new int[]{R.id.dialog_cancel_pwd, R.id.dialog_sure_pwd});
         centerDialog.setOnCenterItemClickListener(this);
+        centerDialog.setView(new EditText(getApplicationContext()));
 
         //添加一个fragment
         //获取管理类
@@ -82,7 +96,6 @@ public class MainActivity extends AppCompatActivity  implements CenterDialog.OnC
                                 .show(mainFragment)
                                 .hide(myFragment)
                                 .commit();
-                        Toast.makeText(MainActivity.this, "first" , Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.my_page:
                         titleText.setText("我的信息");
@@ -91,7 +104,6 @@ public class MainActivity extends AppCompatActivity  implements CenterDialog.OnC
                                 .show(myFragment)
                                 .hide(mainFragment)
                                 .commit();
-                        Toast.makeText(MainActivity.this, "my" , Toast.LENGTH_SHORT).show();
                         break;
                 }
 
@@ -122,13 +134,49 @@ public class MainActivity extends AppCompatActivity  implements CenterDialog.OnC
         centerDialog.show();
     }
 
-
     @Override
     public void OnCenterItemClick(CenterDialog dialog, View view) {
         switch (view.getId()) {
             case R.id.dialog_sure_pwd:
                 dialog.dismiss();
-                Toast.makeText(MainActivity.this, "输入成功", Toast.LENGTH_SHORT).show();
+                passwordD = centerDialog.findViewById(R.id.password_dialog_edit);
+                String pwd = passwordD.getText().toString();
+                if (pwd.isEmpty()) {
+                    Toast.makeText(MainActivity.this, "密码不能为空", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                userCtrl.openDoor(okHttpClient, "{\"selfPwd\": \""+pwd+"\"}", new OkhttpService.OnResponseListener() {
+                    @Override
+                    public void onSuccess(String result) {
+                        java.lang.reflect.Type type = new TypeToken<BaseResponse>() {}.getType();
+                        final BaseResponse baseResponse = new Gson().fromJson(result, type);
+                        if (baseResponse.getCode() != 1) {
+                            (MainActivity.this).runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(MainActivity.this, baseResponse.getMsg(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                            return;
+                        }
+                        (MainActivity.this).runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(MainActivity.this, "开门成功", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFailure(IOException error) {
+                        (MainActivity.this).runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(MainActivity.this, "开门失败", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
                 break;
             case R.id.dialog_cancel_pwd:
                 dialog.dismiss();

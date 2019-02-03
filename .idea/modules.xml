@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/arcface.iml" filepath="$PROJECT_DIR$/arcface.iml" />
+      <module fileurl="file://$PROJECT_DIR$/arcface-andriod.iml" filepath="$PROJECT_DIR$/arcface-andriod.iml" />
     </modules>
   </component>
 </project>
