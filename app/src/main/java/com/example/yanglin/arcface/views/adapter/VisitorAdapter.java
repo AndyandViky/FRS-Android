@@ -35,8 +35,8 @@ public class VisitorAdapter extends RecyclerView.Adapter<VisitorViewHolder> impl
     }
 
     protected Context context;
-    protected List<Visitor> VisitorList;
-    public VisitorAdapter(Context context, List<Visitor> VisitorList){
+    protected List<Visitor.DataBean.DatasBean> VisitorList;
+    public VisitorAdapter(Context context, List<Visitor.DataBean.DatasBean> VisitorList){
         this.context = context;
         this.VisitorList = VisitorList;
     }
@@ -62,20 +62,30 @@ public class VisitorAdapter extends RecyclerView.Adapter<VisitorViewHolder> impl
      */
     @Override
     public void onBindViewHolder(VisitorViewHolder holder, int position) {
-        Visitor visitor = VisitorList.get(position); // 获取menu item
+        Visitor.DataBean.DatasBean visitor = VisitorList.get(position); // 获取menu item
         // 数据传入
+        String createTime = visitor.getCreated_at();
 
         //将position保存在itemView的Tag中，以便点击时进行获取
         holder.itemView.setTag(position);
-        holder.name.setText("访客: "+visitor.getName());
-        holder.phone.setText(visitor.getPhone());
+        holder.name.setText("访客: "+visitor.getPeople().getName());
+        Object phone = visitor.getPeople().getPhone();
+        if(phone instanceof String) {
+            holder.phone.setText(phone.toString());
+        } else holder.phone.setText("暂无");
         holder.reason.setText(visitor.getReason());
-        holder.yearM.setText("12月24");
-        holder.time.setText("20:45");
-        if(visitor.getType() == 0) {
+        holder.yearM.setText(createTime.substring(5, 7) + "月" + createTime.substring(8, 10));
+        holder.time.setText(createTime.substring(11, 16));
+        if(visitor.getStatus() == 0) {
             holder.statusButton.setText("审核");
         }
         else holder.statusButton.setText("已审核");
+    }
+
+    public void replace( List<Visitor.DataBean.DatasBean> list){
+        this.VisitorList.clear();
+        this.VisitorList.addAll(list);
+        notifyDataSetChanged();
     }
 
     /**
@@ -97,8 +107,8 @@ public class VisitorAdapter extends RecyclerView.Adapter<VisitorViewHolder> impl
         this.mOnItemClickListener = listener;
     }
     public int getType(int index) {
-        Visitor visitor = VisitorList.get(index);
-        return visitor.getType();
+        Visitor.DataBean.DatasBean visitor = VisitorList.get(index);
+        return visitor.getStatus();
     }
 }
 

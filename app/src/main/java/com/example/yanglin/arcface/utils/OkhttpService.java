@@ -1,10 +1,18 @@
 package com.example.yanglin.arcface.utils;
 
 import android.app.Dialog;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
@@ -29,8 +37,8 @@ public class OkhttpService {
 
     MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     public static final String TAG = "1";
-    private String basePath = "http://192.168.1.172:8000/resident";
-    private String auth = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZWxmSWQiOjU5NSwidHlwZSI6NCwiaWF0IjoxNTU2MzQ0MDg1LCJleHAiOjE1NTcyMDgwODV9.82RAZLO3MRna-PG2eVhhFvLLjxYHXvH8PeCMq-5rZxc";
+    public static String basePath = "http://192.168.1.172:8000";
+    private static String auth = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZWxmSWQiOjU5NSwidHlwZSI6NCwiaWF0IjoxNTU2MzQ0MDg1LCJleHAiOjE1NTcyMDgwODV9.82RAZLO3MRna-PG2eVhhFvLLjxYHXvH8PeCMq-5rZxc";
     protected String doGet(OkHttpClient okHttpClient, String url, final OnResponseListener listener) {
         url = basePath+url;
         Request request = new Request.Builder()
@@ -165,5 +173,33 @@ public class OkhttpService {
             }
         });
         return null;
+    }
+
+    public static Bitmap returnBitMap(String url, Handler handler) {
+        URL myFileUrl = null;
+        Bitmap bitmap = null;
+        try {
+            myFileUrl = new URL(url);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        try {
+            HttpURLConnection conn = (HttpURLConnection) myFileUrl
+                    .openConnection();
+            conn.setRequestProperty("Authorization", auth);
+            conn.setRequestProperty("Content-type", "application/json");
+            conn.setDoInput(true);
+            conn.connect();
+            InputStream is = conn.getInputStream();
+            bitmap = BitmapFactory.decodeStream(is);
+            Message msg = Message.obtain();
+            msg.obj = bitmap;
+            msg.what = 1;
+            handler.sendMessage(msg);
+            is.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bitmap;
     }
 }

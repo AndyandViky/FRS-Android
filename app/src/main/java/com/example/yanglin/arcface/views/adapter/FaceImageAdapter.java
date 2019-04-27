@@ -3,6 +3,8 @@ package com.example.yanglin.arcface.views.adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +17,13 @@ import com.example.yanglin.arcface.models.Community;
 import com.example.yanglin.arcface.models.FaceImage;
 import com.example.yanglin.arcface.models.Info;
 import com.example.yanglin.arcface.models.Record;
+import com.example.yanglin.arcface.utils.OkhttpService;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 import butterknife.BindView;
@@ -27,10 +35,10 @@ import butterknife.ButterKnife;
 
 public class FaceImageAdapter extends RecyclerView.Adapter<FaceImageAdapter.FaceImageViewHolder>{
     private OnItemLongClickListener mOnItemLongClickListener= null;
-
+    private String picturePath;
     protected Context context;
-    protected List<FaceImage> faceImageList;
-    public FaceImageAdapter(Context context, List<FaceImage> faceImageList){
+    protected List<FaceImage.DataBean> faceImageList;
+    public FaceImageAdapter(Context context, List<FaceImage.DataBean> faceImageList){
         this.context = context;
         this.faceImageList = faceImageList;
     }
@@ -53,13 +61,39 @@ public class FaceImageAdapter extends RecyclerView.Adapter<FaceImageAdapter.Face
      * @param position //当前item下标
      */
     @Override
-    public void onBindViewHolder(FaceImageViewHolder holder, int position) {
-        FaceImage faceImage = faceImageList.get(position); // 获取menu item
+    public void onBindViewHolder(final FaceImageViewHolder holder, int position) {
+        FaceImage.DataBean faceImage = faceImageList.get(position); // 获取menu item
         // 数据传入
 
         //将position保存在itemView的Tag中，以便点击时进行获取
         holder.itemView.setTag(position);
-        holder.faceImage.setImageResource(faceImage.getImage());
+        picturePath = OkhttpService.basePath + faceImage.getModel_image().substring(6);
+        final Handler handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                switch (msg.what){
+                    case 1:
+                        Bitmap bitmap = (Bitmap) msg.obj;
+                        if(bitmap != null) {
+                            holder.faceImage.setImageBitmap(bitmap);
+                        } else holder.faceImage.setImageResource(R.mipmap.article1);
+                        break;
+                }
+            }
+        };
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+                OkhttpService.returnBitMap(picturePath, handler);
+            }
+        }).start();
+    }
+
+    public void replace( List<FaceImage.DataBean> list){
+        this.faceImageList.clear();
+        this.faceImageList.addAll(list);
+        notifyDataSetChanged();
     }
 
     /**

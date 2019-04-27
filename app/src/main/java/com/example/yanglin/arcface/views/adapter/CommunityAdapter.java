@@ -35,8 +35,8 @@ public class CommunityAdapter extends RecyclerView.Adapter<CommunityViewHolder> 
     }
 
     protected Context context;
-    protected List<Community> communityList;
-    public CommunityAdapter(Context context, List<Community> communityList){
+    protected List<Community.DataBean.DatasBean> communityList;
+    public CommunityAdapter(Context context, List<Community.DataBean.DatasBean> communityList){
         this.context = context;
         this.communityList = communityList;
     }
@@ -61,15 +61,37 @@ public class CommunityAdapter extends RecyclerView.Adapter<CommunityViewHolder> 
      */
     @Override
     public void onBindViewHolder(CommunityViewHolder holder, int position) {
-        Community community = communityList.get(position); // 获取menu item
+        Community.DataBean.DatasBean community = communityList.get(position); // 获取menu item
         // 数据传入
 
         //将position保存在itemView的Tag中，以便点击时进行获取
         holder.itemView.setTag(position);
-        holder.infoImage.setImageResource(community.getImage());
         holder.infoTitle.setText(community.getTitle());
-        holder.infoType.setText(community.getCategory());
+        String category = community.getCategory();
+        switch (category) {
+            case "普通文章":
+                holder.infoImage.setImageResource(R.mipmap.article1);
+                break;
+            case "小区动态":
+                holder.infoImage.setImageResource(R.mipmap.article2);
+                break;
+            case "失误招领":
+                holder.infoImage.setImageResource(R.mipmap.article3);
+                break;
+            default:
+                holder.infoImage.setImageResource(R.mipmap.article1);
+                break;
+        }
+        if(category.isEmpty()) {
+            holder.infoType.setText("普通文章");
+        } else holder.infoType.setText(category);
         holder.infoTag1.setText(community.getTag());
+    }
+
+    public void replace( List<Community.DataBean.DatasBean> list){
+        this.communityList.clear();
+        this.communityList.addAll(list);
+        notifyDataSetChanged();
     }
 
     /**

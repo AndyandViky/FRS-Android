@@ -9,8 +9,9 @@ import okhttp3.OkHttpClient;
  */
 
 public class BugCtrl extends OkhttpService {
+    private String baseUrl = "/resident";
     public void applyBug(OkHttpClient okHttpClient, String data, OnResponseListener listener) {
-        String url = "/bug";
+        String url = baseUrl + "/bug";
         this.doPost(okHttpClient, url, data, listener);
     }
 }

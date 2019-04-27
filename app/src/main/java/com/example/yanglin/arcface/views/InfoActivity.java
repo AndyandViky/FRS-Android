@@ -55,6 +55,7 @@ public class InfoActivity extends AppCompatActivity {
     InfoListAdapter infoListAdapter;
     OkHttpClient okHttpClient = new OkHttpClient();
     private Dialog Loadding;
+    NoticeCtrl noticeCtrl;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,28 +76,8 @@ public class InfoActivity extends AppCompatActivity {
         });
 
         infoRecyclerView.setAdapter(infoListAdapter);
-        NoticeCtrl noticeCtrl = new NoticeCtrl();
-        Loadding = LoaddingDialog.createLoadingDialog(InfoActivity.this, "加载中...");
-        noticeCtrl.getNotice(okHttpClient, 1, 10, -1, new OkhttpService.OnResponseListener() {
-            @Override
-            public void onSuccess(String result) {
-                Gson gson = new Gson();
-                java.lang.reflect.Type type = new TypeToken<Info>() {}.getType();
-                info = gson.fromJson(result, type);
-                infoRecyclerView.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        infoListAdapter.replace(info.getData().getDatas());
-                    }
-                });
-                LoaddingDialog.closeDialog(Loadding);
-            }
-
-            @Override
-            public void onFailure(IOException error) {
-                LoaddingDialog.closeDialog(Loadding);
-            }
-        });
+        noticeCtrl = new NoticeCtrl();
+        getNotice(1, 10, -1);
     }
 
     @OnClick(R.id.info_back)
@@ -106,33 +87,21 @@ public class InfoActivity extends AppCompatActivity {
 
     @OnClick(R.id.info_all)
     void clickAll() {
-        infoListAdapter.replace(info.getData().getDatas());
+        getNotice(1, 10, -1);
         clearStyle();
         textAll.setTextColor(borderColor);
         borderAll.setBackgroundColor(borderColor);
     }
     @OnClick(R.id.info_wait_read)
     void clickWaitPass() {
-        ArrayList<Info.DataBean.DatasBean> infos = new ArrayList<>();
-        for(int i=0; i<info.getData().getDatas().size(); i++) {
-            if (info.getData().getDatas().get(i).getStatus() == 1) {
-                infos.add(info.getData().getDatas().get(i));
-            }
-        }
-        infoListAdapter.replace(infos);
+        getNotice(1, 10, 0);
         clearStyle();
         textWait.setTextColor(borderColor);
         borderWait.setBackgroundColor(borderColor);
     }
     @OnClick(R.id.info_read)
     void clickPassed() {
-        ArrayList<Info.DataBean.DatasBean> infos = new ArrayList<>();
-        for(int i=0; i<info.getData().getDatas().size(); i++) {
-            if (info.getData().getDatas().get(i).getStatus() == 0) {
-                infos.add(info.getData().getDatas().get(i));
-            }
-        }
-        infoListAdapter.replace(infos);
+        getNotice(1, 10, 1);
         clearStyle();
         textPassed.setTextColor(borderColor);
         borderPassed.setBackgroundColor(borderColor);
@@ -148,5 +117,28 @@ public class InfoActivity extends AppCompatActivity {
         borderAll.setBackgroundColor(wite);
         borderWait.setBackgroundColor(wite);
         borderPassed.setBackgroundColor(wite);
+    }
+    void getNotice(int pageNo, int pageSize, int status) {
+        Loadding = LoaddingDialog.createLoadingDialog(InfoActivity.this, "加载中...");
+        noticeCtrl.getNotice(okHttpClient, pageNo, pageSize, status, new OkhttpService.OnResponseListener() {
+            @Override
+            public void onSuccess(String result) {
+                Gson gson = new Gson();
+                java.lang.reflect.Type type = new TypeToken<Info>() {}.getType();
+                info = gson.fromJson(result, type);
+                infoRecyclerView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        infoListAdapter.replace(info.getData().getDatas());
+                        LoaddingDialog.closeDialog(Loadding);
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(IOException error) {
+                LoaddingDialog.closeDialog(Loadding);
+            }
+        });
     }
 }

@@ -9,9 +9,10 @@ import okhttp3.OkHttpClient;
  */
 
 public class NoticeCtrl extends OkhttpService{
+    private String baseUrl = "/resident";
 
     public void getNotice(OkHttpClient okHttpClient, int pageNo, int pageSize, int status, OnResponseListener listener) {
-        String url = "/notices?pageNo="+pageNo+"&pageSize="+pageSize;
+        String url = baseUrl + "/notices?pageNo="+pageNo+"&pageSize="+pageSize;
         if (status != -1) {
             url = url + "&status=" + status;
         }

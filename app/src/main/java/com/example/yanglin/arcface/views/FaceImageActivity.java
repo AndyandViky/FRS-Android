@@ -1,6 +1,7 @@
 package com.example.yanglin.arcface.views;
 
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,20 +13,28 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.yanglin.arcface.R;
+import com.example.yanglin.arcface.controllers.UserCtrl;
+import com.example.yanglin.arcface.models.Community;
 import com.example.yanglin.arcface.models.FaceImage;
 import com.example.yanglin.arcface.utils.Enums;
+import com.example.yanglin.arcface.utils.LoaddingDialog;
+import com.example.yanglin.arcface.utils.OkhttpService;
 import com.example.yanglin.arcface.utils.camera.CameraUtil;
 import com.example.yanglin.arcface.utils.systemBar.SystemBarUI;
 import com.example.yanglin.arcface.views.adapter.FaceImageAdapter;
 import com.example.yanglin.arcface.views.dialog.BottomDialog;
 import com.example.yanglin.arcface.views.dialog.CenterDialog;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.OkHttpClient;
 
 /**
  * Created by yanglin on 18-3-24.
@@ -53,9 +62,12 @@ public class FaceImageActivity extends CameraUtil implements  CenterDialog.OnCen
 
     @BindView(R.id.face_image_list)
     RecyclerView faceImageRecycleView;
-    List<FaceImage> faceImageList = new ArrayList<>();
 
-    int images[] = {R.mipmap.face2, R.mipmap.face4};
+    FaceImageAdapter faceImageAdapter;
+    OkHttpClient okHttpClient = new OkHttpClient();
+    private Dialog Loadding;
+    UserCtrl userCtrl;
+    FaceImage faceImage;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,12 +82,8 @@ public class FaceImageActivity extends CameraUtil implements  CenterDialog.OnCen
         ButterKnife.bind(this);
         SystemBarUI.initSystemBar(this, R.color.actionTitle);
 
-        for(int i=0; i<images.length; i++) {
-            FaceImage faceImage = new FaceImage(images[i]);
-            faceImageList.add(faceImage);
-        }
         faceImageRecycleView.setLayoutManager(new LinearLayoutManager(this));
-        FaceImageAdapter faceImageAdapter = new FaceImageAdapter(this, faceImageList);
+        faceImageAdapter = new FaceImageAdapter(this, new ArrayList<FaceImage.DataBean>());
         faceImageAdapter.setOnItemLongClickListener(new FaceImageAdapter.OnItemLongClickListener() {
             @Override
             public void onItemLongClick(View view, int position) {
@@ -83,6 +91,8 @@ public class FaceImageActivity extends CameraUtil implements  CenterDialog.OnCen
             }
         });
         faceImageRecycleView.setAdapter(faceImageAdapter);
+        userCtrl = new UserCtrl();
+        getFaceImage(-1);
     }
 
     @OnClick(R.id.face_image_back)
@@ -92,18 +102,21 @@ public class FaceImageActivity extends CameraUtil implements  CenterDialog.OnCen
 
     @OnClick(R.id.face_all)
     void clickAll() {
+        getFaceImage(-1);
         clearStyle();
         textAll.setTextColor(borderColor);
         borderAll.setBackgroundColor(borderColor);
     }
     @OnClick(R.id.face_wait_use)
     void clickWaitPass() {
+        getFaceImage(0);
         clearStyle();
         textWait.setTextColor(borderColor);
         borderWait.setBackgroundColor(borderColor);
     }
     @OnClick(R.id.face_use)
     void clickPassed() {
+        getFaceImage(1);
         clearStyle();
         textPassed.setTextColor(borderColor);
         borderPassed.setBackgroundColor(borderColor);
@@ -133,6 +146,7 @@ public class FaceImageActivity extends CameraUtil implements  CenterDialog.OnCen
                 Toast.makeText(FaceImageActivity.this, "启用成功", Toast.LENGTH_SHORT).show();
                 break;
             default:
+                dialog.dismiss();
                 break;
         }
     }
@@ -159,5 +173,29 @@ public class FaceImageActivity extends CameraUtil implements  CenterDialog.OnCen
     @OnClick(R.id.add_face_image)
     void addFaceImage() {
         bottomDialog.show();
+    }
+
+    void getFaceImage(int status) {
+        Loadding = LoaddingDialog.createLoadingDialog(FaceImageActivity.this, "加载中...");
+        userCtrl.getFaceImages(okHttpClient, status, new OkhttpService.OnResponseListener() {
+            @Override
+            public void onSuccess(String result) {
+                Gson gson = new Gson();
+                java.lang.reflect.Type type = new TypeToken<FaceImage>() {}.getType();
+                faceImage = gson.fromJson(result, type);
+                faceImageRecycleView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        faceImageAdapter.replace(faceImage.getData());
+                        LoaddingDialog.closeDialog(Loadding);
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(IOException error) {
+                LoaddingDialog.closeDialog(Loadding);
+            }
+        });
     }
 }

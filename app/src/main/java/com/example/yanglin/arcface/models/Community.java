@@ -1,64 +1,192 @@
 package com.example.yanglin.arcface.models;
 
+import java.util.List;
+
 /**
  * Created by yanglin on 18-4-2.
  */
 
 public class Community {
-    int image;
-    String title;
-    String content;
-    String time;
-    String tag;
-    String category;
+    /**
+     * code : 1
+     * msg : 成功
+     * data : {"datas":[{"id":1,"title":"失物招领","content":"<!DOCTYPE html>\n<html>\n<head>\n<\/head>\n<body>\n<p>上午在小区西门捡到一部手机，请丢失手机的失主到物业处领取。<\/p>\n<\/body>\n<\/html>","status":1,"tag":"","category":"","created_at":"2018-04-12T18:58:38.000Z","updated_at":"2019-04-26T06:36:55.000Z","deletedAt":null},{"id":2,"title":"小区组长开始竞选","content":"<!DOCTYPE html>\n<html>\n<head>\n<\/head>\n<body>\n<p><img src=\"dist/plugins/emoticons/img/smiley-cry.gif\" alt=\"cry\" />12月20号, 小区组长开始竞选啦<\/p>\n<\/body>\n<\/html>","status":1,"tag":"","category":"","created_at":"2018-04-12T21:26:16.000Z","updated_at":"2019-04-26T06:36:18.000Z","deletedAt":null},{"id":3,"title":"我也曾触摸太阳","content":"<!DOCTYPE html>\n<html>\n<head>\n<\/head>\n<body>\n<p>第一年去支教的时候，我兴奋得不得了。第二天就是开学的时候，我辗转难眠，激动不已，想了一堆壮志凌云的话感染学生。开学的第一节课我傻眼了，全校60人，我的藏族学生们能听懂汉语的，不到5人。 也就是说：我上课布置他们抄写生字五遍，他们都会一脸茫然地看着我，然后第二天交上来，一个生字整整抄了五页。 同时意味着：他们有时候不讲卫生，不用勺子反用手吃饭时，我告诉他们不要这么做，他们以为我不让他们吃了。 我的那番壮志凌云的话，直到今年再次进山时也没告诉他们。 支教本身就是件复杂的事情，它受地区、族群、当地风俗文化、经济状况、家庭教育以及当今的教育体制的影响。比如我所在的地区，全民信仰佛教，学校还有早上念经的习惯，我非常喜欢和支持，因为这种传承，对他们的民族有特殊的意义；对自身文化的了解和尊重，也能让他们更好地去应对外来文化的冲击，或者说是侵蚀。 我相信有的地方不需要支教，或者说没有支教那些地方会更美好。因为不是每个人都能做到尊重一个完全陌生的文化和族群。老师对孩子的意义太重要了，早期的家庭教育加上后期的学校教育，大致上来说，能让一个孩子的世界观定型。也就是说，作为一个老师，我说的每一句话，都有可能影响到这个孩子的以后，或是一生。有的孩子或许会忘记，但有的孩子会深深刻在脑子里，再糅合到他或她的观念中。 认识到这一点后，我惶恐了好几天。从那以后我千万分注意自己的言行举止，甚至和别人说话的方式态度，批评不听话的孩子时的措辞，甚至批评时的眼神，因为我记得六年级时数学老师因为我数学成绩不好看我厌恶的表情，有时我还会梦到，觉得心有余悸。我虽然知道他们并不是完全能够听懂，但我相信他们全部能够感受到。 我在学校最大的意义，并不是教课文和生字词帮助他们通过考试。我们学校所在的地区孩子并没有刷牙洗脸、洗衣服、晒被子的习惯，家长也不会教他们，有的孩子深受牙痛的折磨，有的孩子头发长虱子，被咬得半夜哭泣。那时我明白了自己在这里的意义，就是和他们一起养成良好的生活习惯。 从那以后我改变了原有的生活作息时间。我早上会提前半个小时起来，那时孩子正在吃早饭，他们都能看到我蹲在办公室外面刷牙洗脸，于是大概一周后，有3个孩子的家长应孩子的乞求，从家里送来了牙膏牙刷和毛巾。我一鼓作气，早晚两次叫那3个孩子和我一起刷牙洗脸，两个星期后，基本全校的孩子早上都会和我一边满口白沫地笑闹，一边得意洋洋地对着天空吐水。 孩子们一开始不懂得尊重老师，偶尔还会顽皮，我教他们篮球规则，通过遵守规则，他们会遵守课堂纪律，有时开开玩笑，读起课文来特别认真。我对他们的卫生情况特别苛刻，他们没有打扫的自觉性，我会亲自拿起扫把拖把，当着他们的面打扫，他们不好意思了，就开始抢着打扫。 走的那天，我以为心情会是平静的，因为我坚信我一定会回来，就像上次离开时的坚定。却没想到我从自己的帐篷拿着墨镜出来时，平时最调皮那几个孩子给我戴上哈达。我蹲下来紧紧抱住他们，抬头看见四周的孩子都在擦眼泪。幸好我戴了墨镜。 我严厉、苛刻、完美主义，我谨慎小心，担心做错一件事说错一句话会影响他们一生，但他们为我改变所有人都能看到，这些日子的相处，他们的眼泪是我最骄傲的收获。 我的双手已经晒黑，那是因为我曾经触摸过太阳。<\/p>\n<\/body>\n<\/html>","status":1,"tag":"","category":"","created_at":"2018-04-26T05:03:38.000Z","updated_at":"2019-04-26T06:34:55.000Z","deletedAt":null},{"id":4,"title":"背上爱翻越喜马拉雅","content":"<!DOCTYPE html>\n<html>\n<head>\n<\/head>\n<body>\n<p>8月，上午的阳光明丽温馨。拉萨波密镇的一家电器商店，一位瘦削的年轻人显然是相中了一台高大豪华的洗衣机，他轻轻地抚摩着，疲惫的眼睛里放射出喜悦的光华。他把洗衣机搬起，又放下，再搬起，再放下，足足折腾了约一个小时，才咬咬牙对店员说：&ldquo;俺要买一台最轻的！&rdquo;店员给他挑了一款重量最轻的海尔双筒洗衣机，忍不住惊诧地问：&ldquo;为什么不买你喜欢的那台？&rdquo;&ldquo;俺要翻越喜玛拉雅山，把洗衣机送给我的未婚妻阿桑，太重了背不过去啊！&rdquo;年轻人付过款，一脸甜蜜而又有些遗憾地回答道。 店员这才明白，他要把洗衣机从海拔1000米的波密镇，翻越喜玛拉雅山，运到深谷中的加热萨村去。整个路程呈倒写的&ldquo;U&rdquo;字形，凶险异常。 &ldquo;英格，出发啦！&rdquo;络腮胡子的扎西大叔对着年轻人喊。这个叫做英格的年轻人，背起用绳索捆紧的洗衣机，跟在马队的后面走上坑坑洼洼的山路。可是，天公不作美，小雨淅淅沥沥从天而降，山路泥泞，负重的英格渐渐落在了马队的后面。走了2个小时之后，他&ldquo;呼哧，呼哧&rdquo;地喘着粗气坐在一块岩山上休息。抬眼望去，路上方悬挂着一排排彩旗，来往其间的运输马队，把家属们绣有经文的旗子挂在这里祈福，其中一面粉红色的，是未婚妻阿桑为他祈求平安而绣的经文。阿桑那双水灵灵的大眼睛似乎在含情脉脉地望着他，他站起身继续前行。6个小时后，英格终于到达露营地，露营地位于隋拉山口，有两处木屋作为行人休息之用。可是，英格却因为迟到而被迫在0℃的室外休息，明天就要登喜玛拉雅山了，谁都想睡个好觉攒足气力。木屋里的人给英格送出尖椒牛肉，还有热汤，吃过饭，英格拉过一条毛毯，偎依着洗衣机进入了梦乡，梦里是阿桑清凌凌的笑。 第二天早上，扎西大叔给马儿喂了热气腾腾的大米饭。他说，只有补充足够的营养，马儿才有可能闯过登山这道难关。 上午8时出发，2小时后到达雪谷，雪谷海拔3200米，都是滑溜溜的冰面，含氧量仅为平原的六成，英格有些头晕，像一只被抛在岸上的鱼，呼吸困难。过了雪谷就到了翻越喜玛拉雅山最关键的地带，俗称&ldquo;地狱之门&rdquo;的马行道，绵延20公里。仅能容一人通过，一侧是陡然突起壁立的岩石，一边是深不可测的万丈深渊。历年来，有无数运输的人马均葬身此地，尸骨不存。上午11时，本来晴空万里的天，突然风起云涌，气温骤降，一会儿的工夫便飘起片片雪花。英格的腿力几乎已经用尽，木然的双脚，像两团棉花，硌在生硬的石子儿上，感觉不到疼。多停留一秒，就多一分危险。英格向雾气腾腾的山谷望了一下，突然头昏眼花。本能地向里侧歪了歪身子，一块凸起的岩石，刮在洗衣机上。他的身子突然失去平衡，一个踉跄，整个人向深涧的方向栽去，幸好英格眼疾手快，抓住一条从山顶垂下的藤条，才幸免于难。英格惊出了一身冷汗，他耳边又响起了阿桑略带幽怨的温语：&ldquo;要是有台洗衣机该多好啊！我就可以为你洗出带有格桑花香气的衣服！&rdquo;一股莫名的勇气自脚掌处升到胸中，他定了定神，继续前行。下午2时终于到达山顶，冰冷刺骨，英格的脚踝被石块划伤渗出鲜血，他只得停下，撕条布片进行简单包扎，他知道不能在此停留，雾气渐渐云集，能见度较低，再待下去，下不了山，只能被活活冻成冰人。接下去是下坡，俗话说上坡容易下坡难，全身的重量都倾压在两条腿上，英格前面一匹驮着大米的健马一下子滚进山涧，连个声响都没发出。 下午5时，终于安全抵达山脚，在露营地，英格有幸抢得一个铺位，因为在山顶着了凉导致了感冒，他浑身酸软无力，吃了点儿东西，便匆匆睡下。第三天清晨，英格无限欢欣，故乡在望，再闯过最后一道关，就是雅鲁藏布大峡谷，穿过水流淙淙的溪涧，是一片未被开发的原始森林，高温30℃，他的汗滴滴嗒嗒滚下来，英格不得不弓身加快速度，如果落在队后，极有可能遇到野兽蛇蝎更有丧命的危险。 下午4时。英格终于把洗衣机背到了加热萨村。家门口，阿桑欢呼着，像一只彩色的小鸟向他飞来。邻居们也都围涌过来看着这稀罕物，唧唧喳喳地问这问那儿。英格细心地向阿桑讲解着洗衣机的用法，阿桑清澈的眼睛溅起好奇的波澜，她抬起胳膊，却没有纤纤玉手，仅仅是用两只光秃秃的臂干，夹住按钮，吃力的旋转了一下。&ldquo;不要着急！阿桑！慢慢学。&rdquo;英格脸上满是怜爱。 阿桑不是加热萨村人，她原是一名城里的大学生，到他们这处秘境桃源来支教。教着教着，阿桑便爱上了这里绿油油的茶树，爱上了这里天真可爱的孩子，也爱上英格这个善良勇敢的青年，她决定永远地留下来和英格生活一辈子。不幸的是，去年仲秋，英格突发高烧不退，性命不保，翻山越岭背着英格，到波密镇去求医是不现实的。医生说，需要草药来医治，可惜这药很难找，心急如焚的阿桑便背起竹篓，漫山遍野去寻找这种罕见的名叫&ldquo;玉女莲花&rdquo;的草药。草药找到了，她却被毒蛇咬了双手，因抢救及时，虽然保住了性命，但那双纤纤玉手却永远不复存在。英格含泪把熬好的草药一滴滴吞下，高烧逐渐退去。<\/p>\n<\/body>\n<\/html>","status":1,"tag":"新闻,活动","category":"失误招领","created_at":"2018-04-26T05:36:03.000Z","updated_at":"2019-04-26T06:35:25.000Z","deletedAt":null}],"pageNo":1,"pageSize":10,"total":4}
+     */
 
-    public Community(int image, String title, String content, String time, String tag, String category) {
-        this.image = image;
-        this.title = title;
-        this.time = time;
-        this.content = content;
-        this.tag = tag;
-        this.category = category;
-    }
-    public int getImage() {
-        return this.image;
-    }
-    public void setImage(int image) {
-        this.image = image;
+    private int code;
+    private String msg;
+    private DataBean data;
+
+    public int getCode() {
+        return code;
     }
 
-    public String getTitle() {
-        return this.title;
-    }
-    public void setTitle(String title) {
-        this.title = title;
+    public void setCode(int code) {
+        this.code = code;
     }
 
-    public String getContent() {
-        return this.content;
-    }
-    public void setContent(String content) {
-        this.content = content;
+    public String getMsg() {
+        return msg;
     }
 
-    public String getTime() {
-        return this.time;
-    }
-    public void setTime(String time) {
-        this.time = time;
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
-    public String getTag() {
-        return this.tag;
-    }
-    public void setTag(String tag) {
-        this.tag = tag;
+    public DataBean getData() {
+        return data;
     }
 
-    public String getCategory() {
-        return this.category;
+    public void setData(DataBean data) {
+        this.data = data;
     }
-    public void setCategory(String category) {
-        this.category = category;
+
+    public static class DataBean {
+        /**
+         * datas : [{"id":1,"title":"失物招领","content":"<!DOCTYPE html>\n<html>\n<head>\n<\/head>\n<body>\n<p>上午在小区西门捡到一部手机，请丢失手机的失主到物业处领取。<\/p>\n<\/body>\n<\/html>","status":1,"tag":"","category":"","created_at":"2018-04-12T18:58:38.000Z","updated_at":"2019-04-26T06:36:55.000Z","deletedAt":null},{"id":2,"title":"小区组长开始竞选","content":"<!DOCTYPE html>\n<html>\n<head>\n<\/head>\n<body>\n<p><img src=\"dist/plugins/emoticons/img/smiley-cry.gif\" alt=\"cry\" />12月20号, 小区组长开始竞选啦<\/p>\n<\/body>\n<\/html>","status":1,"tag":"","category":"","created_at":"2018-04-12T21:26:16.000Z","updated_at":"2019-04-26T06:36:18.000Z","deletedAt":null},{"id":3,"title":"我也曾触摸太阳","content":"<!DOCTYPE html>\n<html>\n<head>\n<\/head>\n<body>\n<p>第一年去支教的时候，我兴奋得不得了。第二天就是开学的时候，我辗转难眠，激动不已，想了一堆壮志凌云的话感染学生。开学的第一节课我傻眼了，全校60人，我的藏族学生们能听懂汉语的，不到5人。 也就是说：我上课布置他们抄写生字五遍，他们都会一脸茫然地看着我，然后第二天交上来，一个生字整整抄了五页。 同时意味着：他们有时候不讲卫生，不用勺子反用手吃饭时，我告诉他们不要这么做，他们以为我不让他们吃了。 我的那番壮志凌云的话，直到今年再次进山时也没告诉他们。 支教本身就是件复杂的事情，它受地区、族群、当地风俗文化、经济状况、家庭教育以及当今的教育体制的影响。比如我所在的地区，全民信仰佛教，学校还有早上念经的习惯，我非常喜欢和支持，因为这种传承，对他们的民族有特殊的意义；对自身文化的了解和尊重，也能让他们更好地去应对外来文化的冲击，或者说是侵蚀。 我相信有的地方不需要支教，或者说没有支教那些地方会更美好。因为不是每个人都能做到尊重一个完全陌生的文化和族群。老师对孩子的意义太重要了，早期的家庭教育加上后期的学校教育，大致上来说，能让一个孩子的世界观定型。也就是说，作为一个老师，我说的每一句话，都有可能影响到这个孩子的以后，或是一生。有的孩子或许会忘记，但有的孩子会深深刻在脑子里，再糅合到他或她的观念中。 认识到这一点后，我惶恐了好几天。从那以后我千万分注意自己的言行举止，甚至和别人说话的方式态度，批评不听话的孩子时的措辞，甚至批评时的眼神，因为我记得六年级时数学老师因为我数学成绩不好看我厌恶的表情，有时我还会梦到，觉得心有余悸。我虽然知道他们并不是完全能够听懂，但我相信他们全部能够感受到。 我在学校最大的意义，并不是教课文和生字词帮助他们通过考试。我们学校所在的地区孩子并没有刷牙洗脸、洗衣服、晒被子的习惯，家长也不会教他们，有的孩子深受牙痛的折磨，有的孩子头发长虱子，被咬得半夜哭泣。那时我明白了自己在这里的意义，就是和他们一起养成良好的生活习惯。 从那以后我改变了原有的生活作息时间。我早上会提前半个小时起来，那时孩子正在吃早饭，他们都能看到我蹲在办公室外面刷牙洗脸，于是大概一周后，有3个孩子的家长应孩子的乞求，从家里送来了牙膏牙刷和毛巾。我一鼓作气，早晚两次叫那3个孩子和我一起刷牙洗脸，两个星期后，基本全校的孩子早上都会和我一边满口白沫地笑闹，一边得意洋洋地对着天空吐水。 孩子们一开始不懂得尊重老师，偶尔还会顽皮，我教他们篮球规则，通过遵守规则，他们会遵守课堂纪律，有时开开玩笑，读起课文来特别认真。我对他们的卫生情况特别苛刻，他们没有打扫的自觉性，我会亲自拿起扫把拖把，当着他们的面打扫，他们不好意思了，就开始抢着打扫。 走的那天，我以为心情会是平静的，因为我坚信我一定会回来，就像上次离开时的坚定。却没想到我从自己的帐篷拿着墨镜出来时，平时最调皮那几个孩子给我戴上哈达。我蹲下来紧紧抱住他们，抬头看见四周的孩子都在擦眼泪。幸好我戴了墨镜。 我严厉、苛刻、完美主义，我谨慎小心，担心做错一件事说错一句话会影响他们一生，但他们为我改变所有人都能看到，这些日子的相处，他们的眼泪是我最骄傲的收获。 我的双手已经晒黑，那是因为我曾经触摸过太阳。<\/p>\n<\/body>\n<\/html>","status":1,"tag":"","category":"","created_at":"2018-04-26T05:03:38.000Z","updated_at":"2019-04-26T06:34:55.000Z","deletedAt":null},{"id":4,"title":"背上爱翻越喜马拉雅","content":"<!DOCTYPE html>\n<html>\n<head>\n<\/head>\n<body>\n<p>8月，上午的阳光明丽温馨。拉萨波密镇的一家电器商店，一位瘦削的年轻人显然是相中了一台高大豪华的洗衣机，他轻轻地抚摩着，疲惫的眼睛里放射出喜悦的光华。他把洗衣机搬起，又放下，再搬起，再放下，足足折腾了约一个小时，才咬咬牙对店员说：&ldquo;俺要买一台最轻的！&rdquo;店员给他挑了一款重量最轻的海尔双筒洗衣机，忍不住惊诧地问：&ldquo;为什么不买你喜欢的那台？&rdquo;&ldquo;俺要翻越喜玛拉雅山，把洗衣机送给我的未婚妻阿桑，太重了背不过去啊！&rdquo;年轻人付过款，一脸甜蜜而又有些遗憾地回答道。 店员这才明白，他要把洗衣机从海拔1000米的波密镇，翻越喜玛拉雅山，运到深谷中的加热萨村去。整个路程呈倒写的&ldquo;U&rdquo;字形，凶险异常。 &ldquo;英格，出发啦！&rdquo;络腮胡子的扎西大叔对着年轻人喊。这个叫做英格的年轻人，背起用绳索捆紧的洗衣机，跟在马队的后面走上坑坑洼洼的山路。可是，天公不作美，小雨淅淅沥沥从天而降，山路泥泞，负重的英格渐渐落在了马队的后面。走了2个小时之后，他&ldquo;呼哧，呼哧&rdquo;地喘着粗气坐在一块岩山上休息。抬眼望去，路上方悬挂着一排排彩旗，来往其间的运输马队，把家属们绣有经文的旗子挂在这里祈福，其中一面粉红色的，是未婚妻阿桑为他祈求平安而绣的经文。阿桑那双水灵灵的大眼睛似乎在含情脉脉地望着他，他站起身继续前行。6个小时后，英格终于到达露营地，露营地位于隋拉山口，有两处木屋作为行人休息之用。可是，英格却因为迟到而被迫在0℃的室外休息，明天就要登喜玛拉雅山了，谁都想睡个好觉攒足气力。木屋里的人给英格送出尖椒牛肉，还有热汤，吃过饭，英格拉过一条毛毯，偎依着洗衣机进入了梦乡，梦里是阿桑清凌凌的笑。 第二天早上，扎西大叔给马儿喂了热气腾腾的大米饭。他说，只有补充足够的营养，马儿才有可能闯过登山这道难关。 上午8时出发，2小时后到达雪谷，雪谷海拔3200米，都是滑溜溜的冰面，含氧量仅为平原的六成，英格有些头晕，像一只被抛在岸上的鱼，呼吸困难。过了雪谷就到了翻越喜玛拉雅山最关键的地带，俗称&ldquo;地狱之门&rdquo;的马行道，绵延20公里。仅能容一人通过，一侧是陡然突起壁立的岩石，一边是深不可测的万丈深渊。历年来，有无数运输的人马均葬身此地，尸骨不存。上午11时，本来晴空万里的天，突然风起云涌，气温骤降，一会儿的工夫便飘起片片雪花。英格的腿力几乎已经用尽，木然的双脚，像两团棉花，硌在生硬的石子儿上，感觉不到疼。多停留一秒，就多一分危险。英格向雾气腾腾的山谷望了一下，突然头昏眼花。本能地向里侧歪了歪身子，一块凸起的岩石，刮在洗衣机上。他的身子突然失去平衡，一个踉跄，整个人向深涧的方向栽去，幸好英格眼疾手快，抓住一条从山顶垂下的藤条，才幸免于难。英格惊出了一身冷汗，他耳边又响起了阿桑略带幽怨的温语：&ldquo;要是有台洗衣机该多好啊！我就可以为你洗出带有格桑花香气的衣服！&rdquo;一股莫名的勇气自脚掌处升到胸中，他定了定神，继续前行。下午2时终于到达山顶，冰冷刺骨，英格的脚踝被石块划伤渗出鲜血，他只得停下，撕条布片进行简单包扎，他知道不能在此停留，雾气渐渐云集，能见度较低，再待下去，下不了山，只能被活活冻成冰人。接下去是下坡，俗话说上坡容易下坡难，全身的重量都倾压在两条腿上，英格前面一匹驮着大米的健马一下子滚进山涧，连个声响都没发出。 下午5时，终于安全抵达山脚，在露营地，英格有幸抢得一个铺位，因为在山顶着了凉导致了感冒，他浑身酸软无力，吃了点儿东西，便匆匆睡下。第三天清晨，英格无限欢欣，故乡在望，再闯过最后一道关，就是雅鲁藏布大峡谷，穿过水流淙淙的溪涧，是一片未被开发的原始森林，高温30℃，他的汗滴滴嗒嗒滚下来，英格不得不弓身加快速度，如果落在队后，极有可能遇到野兽蛇蝎更有丧命的危险。 下午4时。英格终于把洗衣机背到了加热萨村。家门口，阿桑欢呼着，像一只彩色的小鸟向他飞来。邻居们也都围涌过来看着这稀罕物，唧唧喳喳地问这问那儿。英格细心地向阿桑讲解着洗衣机的用法，阿桑清澈的眼睛溅起好奇的波澜，她抬起胳膊，却没有纤纤玉手，仅仅是用两只光秃秃的臂干，夹住按钮，吃力的旋转了一下。&ldquo;不要着急！阿桑！慢慢学。&rdquo;英格脸上满是怜爱。 阿桑不是加热萨村人，她原是一名城里的大学生，到他们这处秘境桃源来支教。教着教着，阿桑便爱上了这里绿油油的茶树，爱上了这里天真可爱的孩子，也爱上英格这个善良勇敢的青年，她决定永远地留下来和英格生活一辈子。不幸的是，去年仲秋，英格突发高烧不退，性命不保，翻山越岭背着英格，到波密镇去求医是不现实的。医生说，需要草药来医治，可惜这药很难找，心急如焚的阿桑便背起竹篓，漫山遍野去寻找这种罕见的名叫&ldquo;玉女莲花&rdquo;的草药。草药找到了，她却被毒蛇咬了双手，因抢救及时，虽然保住了性命，但那双纤纤玉手却永远不复存在。英格含泪把熬好的草药一滴滴吞下，高烧逐渐退去。<\/p>\n<\/body>\n<\/html>","status":1,"tag":"新闻,活动","category":"失误招领","created_at":"2018-04-26T05:36:03.000Z","updated_at":"2019-04-26T06:35:25.000Z","deletedAt":null}]
+         * pageNo : 1
+         * pageSize : 10
+         * total : 4
+         */
+
+        private int pageNo;
+        private int pageSize;
+        private int total;
+        private List<DatasBean> datas;
+
+        public int getPageNo() {
+            return pageNo;
+        }
+
+        public void setPageNo(int pageNo) {
+            this.pageNo = pageNo;
+        }
+
+        public int getPageSize() {
+            return pageSize;
+        }
+
+        public void setPageSize(int pageSize) {
+            this.pageSize = pageSize;
+        }
+
+        public int getTotal() {
+            return total;
+        }
+
+        public void setTotal(int total) {
+            this.total = total;
+        }
+
+        public List<DatasBean> getDatas() {
+            return datas;
+        }
+
+        public void setDatas(List<DatasBean> datas) {
+            this.datas = datas;
+        }
+
+        public static class DatasBean {
+            /**
+             * id : 1
+             * title : 失物招领
+             * content : <!DOCTYPE html>
+             <html>
+             <head>
+             </head>
+             <body>
+             <p>上午在小区西门捡到一部手机，请丢失手机的失主到物业处领取。</p>
+             </body>
+             </html>
+             * status : 1
+             * tag :
+             * category :
+             * created_at : 2018-04-12T18:58:38.000Z
+             * updated_at : 2019-04-26T06:36:55.000Z
+             * deletedAt : null
+             */
+
+            private int id;
+            private String title;
+            private String content;
+            private int status;
+            private String tag;
+            private String category;
+            private String created_at;
+            private String updated_at;
+            private Object deletedAt;
+
+            public int getId() {
+                return id;
+            }
+
+            public void setId(int id) {
+                this.id = id;
+            }
+
+            public String getTitle() {
+                return title;
+            }
+
+            public void setTitle(String title) {
+                this.title = title;
+            }
+
+            public String getContent() {
+                return content;
+            }
+
+            public void setContent(String content) {
+                this.content = content;
+            }
+
+            public int getStatus() {
+                return status;
+            }
+
+            public void setStatus(int status) {
+                this.status = status;
+            }
+
+            public String getTag() {
+                return tag;
+            }
+
+            public void setTag(String tag) {
+                this.tag = tag;
+            }
+
+            public String getCategory() {
+                return category;
+            }
+
+            public void setCategory(String category) {
+                this.category = category;
+            }
+
+            public String getCreated_at() {
+                return created_at;
+            }
+
+            public void setCreated_at(String created_at) {
+                this.created_at = created_at;
+            }
+
+            public String getUpdated_at() {
+                return updated_at;
+            }
+
+            public void setUpdated_at(String updated_at) {
+                this.updated_at = updated_at;
+            }
+
+            public Object getDeletedAt() {
+                return deletedAt;
+            }
+
+            public void setDeletedAt(Object deletedAt) {
+                this.deletedAt = deletedAt;
+            }
+        }
     }
 }

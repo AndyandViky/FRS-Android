@@ -6,22 +6,24 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.widget.Toast;
 
 import com.example.yanglin.arcface.R;
+import com.example.yanglin.arcface.controllers.UserCtrl;
 import com.example.yanglin.arcface.models.Record;
 import com.example.yanglin.arcface.utils.LoaddingDialog;
-import com.example.yanglin.arcface.utils.data.DataUtil;
+import com.example.yanglin.arcface.utils.OkhttpService;
 import com.example.yanglin.arcface.utils.systemBar.SystemBarUI;
 import com.example.yanglin.arcface.views.adapter.RecordListAdapter;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.OkHttpClient;
 
 /**
  * Created by yanglin on 18-3-21.
@@ -30,12 +32,12 @@ import butterknife.OnClick;
 public class RoomRecordActivity extends AppCompatActivity {
     @BindView(R.id.record_list)
     RecyclerView recordRecyclerView;
-    int types[] = {1, 2, 1, 2, 2, 1, 1, 1, 2};
-    String times[] = {"2018-4-5 17:22:16", "2018-4-6 8:13:11", "2018-4-6 12:20:10", "2018-4-7 10:55:22", "2018-4-7 10:55:12", "2018-4-7 15:20:22", "2018-4-8 09:12:55", "2018-4-10 10:23:44", "2018-4-10 12:33:44"};
-    int peopleCounts[] = {3, 2, 1, 3, 2, 1, 2, 1, 1};
-    List<Record> recordList = new ArrayList<>();
     int currentPosition;
+    Record record;
+    RecordListAdapter recordListAdapter;
+    OkHttpClient okHttpClient = new OkHttpClient();
     private Dialog Loadding;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,18 +45,32 @@ public class RoomRecordActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         SystemBarUI.initSystemBar(this, R.color.actionTitle);
 
-        recordList = DataUtil.getRecord(types, peopleCounts, times);
         recordRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        RecordListAdapter recordListAdapter = new RecordListAdapter(this, recordList);
-        recordListAdapter.setOnItemClickListener(new RecordListAdapter.OnItemClickListener() {
+
+        recordListAdapter = new RecordListAdapter(RoomRecordActivity.this, new ArrayList<Record.DataBean.DatasBean>());
+        recordRecyclerView.setAdapter(recordListAdapter);
+        UserCtrl userCtrl = new UserCtrl();
+        Loadding = LoaddingDialog.createLoadingDialog(RoomRecordActivity.this, "加载中...");
+        userCtrl.getGateRecord(okHttpClient, 1, 10, new OkhttpService.OnResponseListener() {
+            @Override
+            public void onSuccess(String result) {
+                Gson gson = new Gson();
+                java.lang.reflect.Type type = new TypeToken<Record>() {}.getType();
+                record = gson.fromJson(result, type);
+                recordRecyclerView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        recordListAdapter.replace(record.getData().getDatas());
+                        LoaddingDialog.closeDialog(Loadding);
+                    }
+                });
+            }
 
             @Override
-            public void onItemClick(View view, int position) {
-                Toast.makeText(RoomRecordActivity.this,String.valueOf(position),Toast.LENGTH_SHORT).show();
+            public void onFailure(IOException error) {
+                LoaddingDialog.closeDialog(Loadding);
             }
         });
-        recordRecyclerView.setAdapter(recordListAdapter);
-        // Loadding = LoaddingDialog.createLoadingDialog(RoomRecordActivity.this, "加载中...");
     }
 
     @OnClick(R.id.record_more_button)

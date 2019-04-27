@@ -1,5 +1,6 @@
 package com.example.yanglin.arcface.views;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,19 +11,23 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.yanglin.arcface.R;
+import com.example.yanglin.arcface.controllers.UserCtrl;
 import com.example.yanglin.arcface.models.Community;
-import com.example.yanglin.arcface.models.Info;
-import com.example.yanglin.arcface.utils.data.DataUtil;
+import com.example.yanglin.arcface.utils.LoaddingDialog;
+import com.example.yanglin.arcface.utils.OkhttpService;
 import com.example.yanglin.arcface.utils.systemBar.SystemBarUI;
 import com.example.yanglin.arcface.views.adapter.CommunityAdapter;
-import com.example.yanglin.arcface.views.adapter.InfoListAdapter;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.OkHttpClient;
 
 /**
  * Created by yanglin on 18-4-2.
@@ -32,13 +37,12 @@ public class CommunityActivity extends AppCompatActivity {
     @BindView(R.id.community_list)
     RecyclerView communityRecycleView;
     List<Community> communityList = new ArrayList<>();
+    CommunityAdapter communityAdapter;
+    OkHttpClient okHttpClient = new OkHttpClient();
+    private Dialog Loadding;
+    UserCtrl userCtrl;
+    Community community;
 
-    int images[] = {R.mipmap.article1, R.mipmap.article2, R.mipmap.article3};
-    String titles[] = {"中国人脸门禁排名再次更新, 我们光荣上榜.", "12月20日幸福花园小区将要举办第3届运动会", "有人在15幢322拾到一把钥匙, 请丢失人到门卫处领取"};
-    String contents[] = {"登录通知: 登录通知登录通知登录通知登录通知", "天空一号坠毁: 天空一号坠毁天空一号坠毁天空一号坠毁", ""};
-    String times[] = {"12月20日", "12月20日", ""};
-    String tags[] = {"新闻", "", ""};
-    String categorys[] = {"普通文章", "小区动态", "失误招领"};
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,9 +50,8 @@ public class CommunityActivity extends AppCompatActivity {
         SystemBarUI.initSystemBar(this, R.color.actionTitle);
         ButterKnife.bind(this);
 
-        communityList = DataUtil.getCommunity(images, titles, contents, times, tags, categorys);
         communityRecycleView.setLayoutManager(new LinearLayoutManager(this));
-        CommunityAdapter communityAdapter = new CommunityAdapter(this, communityList);
+        communityAdapter = new CommunityAdapter(this, new ArrayList<Community.DataBean.DatasBean>());
         communityAdapter.setOnItemClickListener(new CommunityAdapter.OnItemClickListener() {
 
             @Override
@@ -58,6 +61,28 @@ public class CommunityActivity extends AppCompatActivity {
             }
         });
         communityRecycleView.setAdapter(communityAdapter);
+        userCtrl = new UserCtrl();
+        Loadding = LoaddingDialog.createLoadingDialog(CommunityActivity.this, "加载中...");
+        userCtrl.getArticles(okHttpClient, 1, 10, new OkhttpService.OnResponseListener() {
+            @Override
+            public void onSuccess(String result) {
+                Gson gson = new Gson();
+                java.lang.reflect.Type type = new TypeToken<Community>() {}.getType();
+                community = gson.fromJson(result, type);
+                communityRecycleView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        communityAdapter.replace(community.getData().getDatas());
+                        LoaddingDialog.closeDialog(Loadding);
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(IOException error) {
+                LoaddingDialog.closeDialog(Loadding);
+            }
+        });
     }
 
     @OnClick(R.id.commmunity_back)

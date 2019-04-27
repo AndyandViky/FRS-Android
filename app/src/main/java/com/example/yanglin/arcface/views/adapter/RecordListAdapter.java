@@ -11,6 +11,9 @@ import android.widget.TextView;
 import com.example.yanglin.arcface.R;
 import com.example.yanglin.arcface.models.Record;
 
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -29,8 +32,8 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordViewHolder> im
     }
 
     protected Context context;
-    protected List<Record> RecordList;
-    public RecordListAdapter(Context context, List<Record> RecordList){
+    protected List<Record.DataBean.DatasBean> RecordList;
+    public RecordListAdapter(Context context, List<Record.DataBean.DatasBean> RecordList){
         this.context = context;
         this.RecordList = RecordList;
     }
@@ -48,6 +51,12 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordViewHolder> im
         return vn;
     }
 
+    public void replace( List<Record.DataBean.DatasBean> list){
+        this.RecordList.clear();
+        this.RecordList.addAll(list);
+        notifyDataSetChanged();
+    }
+
 
     /**
      * 绑定数据到hodel
@@ -56,13 +65,14 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordViewHolder> im
      */
     @Override
     public void onBindViewHolder(RecordViewHolder holder, int position) {
-        Record li = RecordList.get(position); // 获取menu item
+        Record.DataBean.DatasBean li = RecordList.get(position); // 获取menu item
         // 数据传入
 
         //将position保存在itemView的Tag中，以便点击时进行获取
         holder.itemView.setTag(position);
-        holder.recordPeopleCount.setText(li.getPeopleCount()+"人");
-        holder.recordTime.setText(li.getTime());
+        holder.recordPeopleCount.setText(li.getCount()+"人");
+        holder.recordTime.setText(li.getCreated_at());
+
         if(li.getType() == 1) {
             // 摄像头
             holder.recordType.setImageResource(R.mipmap.camera_type);
