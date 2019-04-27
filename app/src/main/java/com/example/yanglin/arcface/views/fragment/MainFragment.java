@@ -1,5 +1,6 @@
 package com.example.yanglin.arcface.views.fragment;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
@@ -12,8 +13,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.yanglin.arcface.R;
+import com.example.yanglin.arcface.utils.LoaddingDialog;
 import com.example.yanglin.arcface.utils.data.DataUtil;
 import com.example.yanglin.arcface.views.ApplyBugActivity;
+import com.example.yanglin.arcface.views.MainActivity;
 import com.example.yanglin.arcface.views.RoomRecordActivity;
 import com.example.yanglin.arcface.views.VisitorActivity;
 import com.example.yanglin.arcface.views.VisitorRegisterActivity;

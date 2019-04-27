@@ -1,5 +1,6 @@
 package com.example.yanglin.arcface.views;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import com.example.yanglin.arcface.R;
 import com.example.yanglin.arcface.controllers.NoticeCtrl;
 import com.example.yanglin.arcface.models.Info;
+import com.example.yanglin.arcface.utils.LoaddingDialog;
 import com.example.yanglin.arcface.utils.OkhttpService;
 import com.example.yanglin.arcface.utils.systemBar.SystemBarUI;
 import com.example.yanglin.arcface.views.adapter.InfoListAdapter;
@@ -52,6 +54,7 @@ public class InfoActivity extends AppCompatActivity {
     Info info;
     InfoListAdapter infoListAdapter;
     OkHttpClient okHttpClient = new OkHttpClient();
+    private Dialog Loadding;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,8 +75,8 @@ public class InfoActivity extends AppCompatActivity {
         });
 
         infoRecyclerView.setAdapter(infoListAdapter);
-
         NoticeCtrl noticeCtrl = new NoticeCtrl();
+        Loadding = LoaddingDialog.createLoadingDialog(InfoActivity.this, "加载中...");
         noticeCtrl.getNotice(okHttpClient, 1, 10, -1, new OkhttpService.OnResponseListener() {
             @Override
             public void onSuccess(String result) {
@@ -86,11 +89,12 @@ public class InfoActivity extends AppCompatActivity {
                         infoListAdapter.replace(info.getData().getDatas());
                     }
                 });
+                LoaddingDialog.closeDialog(Loadding);
             }
 
             @Override
             public void onFailure(IOException error) {
-
+                LoaddingDialog.closeDialog(Loadding);
             }
         });
     }

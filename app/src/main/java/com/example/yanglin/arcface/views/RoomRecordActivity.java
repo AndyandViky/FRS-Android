@@ -1,5 +1,6 @@
 package com.example.yanglin.arcface.views;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 
 import com.example.yanglin.arcface.R;
 import com.example.yanglin.arcface.models.Record;
+import com.example.yanglin.arcface.utils.LoaddingDialog;
 import com.example.yanglin.arcface.utils.data.DataUtil;
 import com.example.yanglin.arcface.utils.systemBar.SystemBarUI;
 import com.example.yanglin.arcface.views.adapter.RecordListAdapter;
@@ -33,6 +35,7 @@ public class RoomRecordActivity extends AppCompatActivity {
     int peopleCounts[] = {3, 2, 1, 3, 2, 1, 2, 1, 1};
     List<Record> recordList = new ArrayList<>();
     int currentPosition;
+    private Dialog Loadding;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +54,7 @@ public class RoomRecordActivity extends AppCompatActivity {
             }
         });
         recordRecyclerView.setAdapter(recordListAdapter);
+        // Loadding = LoaddingDialog.createLoadingDialog(RoomRecordActivity.this, "加载中...");
     }
 
     @OnClick(R.id.record_more_button)

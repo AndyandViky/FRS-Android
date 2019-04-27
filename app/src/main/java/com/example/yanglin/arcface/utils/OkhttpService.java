@@ -1,5 +1,6 @@
 package com.example.yanglin.arcface.utils;
 
+import android.app.Dialog;
 import android.util.Log;
 
 import java.io.File;
@@ -26,12 +27,10 @@ public class OkhttpService {
         void onFailure(IOException error);
     }
 
-
-
     MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     public static final String TAG = "1";
-    private String basePath = "http://localhost:8000/visitor";
-    private String auth = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZWxmSWQiOjIsInR5cGUiOjIsImlhdCI6MTU0OTE5ODk3MywiZXhwIjoxNTUwMDYyOTczfQ.Noqmra59P-j-YikMSWltRM_By8ry4ucgDP0ErRXyJiE";
+    private String basePath = "http://192.168.1.172:8000/resident";
+    private String auth = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZWxmSWQiOjU5NSwidHlwZSI6NCwiaWF0IjoxNTU2MzQ0MDg1LCJleHAiOjE1NTcyMDgwODV9.82RAZLO3MRna-PG2eVhhFvLLjxYHXvH8PeCMq-5rZxc";
     protected String doGet(OkHttpClient okHttpClient, String url, final OnResponseListener listener) {
         url = basePath+url;
         Request request = new Request.Builder()
