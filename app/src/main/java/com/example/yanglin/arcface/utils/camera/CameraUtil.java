@@ -24,6 +24,7 @@ import com.example.yanglin.arcface.models.Attachment;
 import com.example.yanglin.arcface.models.BaseResponse;
 import com.example.yanglin.arcface.utils.BitmapUtils;
 import com.example.yanglin.arcface.utils.Enums;
+import com.example.yanglin.arcface.utils.LoaddingDialog;
 import com.example.yanglin.arcface.utils.OkhttpService;
 import com.example.yanglin.arcface.views.FaceImageActivity;
 import com.google.gson.Gson;
@@ -48,7 +49,7 @@ public class CameraUtil extends AppCompatActivity{
     AttachmentCtrl attachmentCtrl = new AttachmentCtrl();
     private Bitmap attachmentImage = null;
 
-    ImageView imageView;
+    ImageView imageView = null;
 
     protected void openCamera(Enums.Camera type, ImageView view) {
         imageView = view;
@@ -116,7 +117,7 @@ public class CameraUtil extends AppCompatActivity{
                     try {
                         String path = imageUri.getPath();
                         attachmentImage = BitmapUtils.decodeSampledBitmapFromFd(path, 640, 480);
-                        imageView.setImageBitmap(attachmentImage);
+                        if(imageView != null) imageView.setImageBitmap(attachmentImage);
                         File file = BitmapUtils.compressImage(attachmentImage);
 
                         attachmentCtrl.uploadImage(file, new OkhttpService.OnResponseListener() {
@@ -232,7 +233,7 @@ public class CameraUtil extends AppCompatActivity{
     private void displayImage(String imagePath) {
         if (imagePath != null) {
             attachmentImage = BitmapUtils.decodeSampledBitmapFromFd(imagePath, 640, 480);
-            imageView.setImageBitmap(attachmentImage);
+            if(imageView != null) imageView.setImageBitmap(attachmentImage);
             File file = BitmapUtils.compressImage(attachmentImage);
 
             attachmentCtrl.uploadImage(file, new OkhttpService.OnResponseListener() {

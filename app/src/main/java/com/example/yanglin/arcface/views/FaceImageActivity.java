@@ -187,11 +187,11 @@ public class FaceImageActivity extends CameraUtil implements  CenterDialog.OnCen
         switch (view.getId()) {
             case R.id.photo_dialog_camera:
                 dialog.dismiss();
-                // this.openCamera(Enums.Camera.UPLOADFACE);
+                this.openCamera(Enums.Camera.UPLOADFACE, null);
                 break;
             case R.id.photo_dialog_photo:
                 dialog.dismiss();
-                // this.openAlbum(Enums.Camera.UPLOADFACE);
+                this.openAlbum(Enums.Camera.UPLOADFACE, null);
                 break;
             case R.id.photo_dialog_cancel:
                 dialog.dismiss();
