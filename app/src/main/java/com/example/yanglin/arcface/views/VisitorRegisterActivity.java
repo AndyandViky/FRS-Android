@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.yanglin.arcface.R;
@@ -80,6 +81,9 @@ public class VisitorRegisterActivity extends CameraUtil implements  CenterDialog
     EditText vTime;
     @BindView(R.id.visitor_reason)
     EditText vReason;
+    @BindView(R.id.face_image)
+    ImageView faceImage;
+
     @Override
     public void OnCenterItemClick(CenterDialog dialog, View view) {
         switch (view.getId()) {
@@ -160,11 +164,11 @@ public class VisitorRegisterActivity extends CameraUtil implements  CenterDialog
         switch (view.getId()) {
             case R.id.photo_dialog_camera:
                 dialog.dismiss();
-                this.openCamera(Enums.Camera.UPLOADVISITOR);
+                this.openCamera(Enums.Camera.UPLOADVISITOR, faceImage);
                 break;
             case R.id.photo_dialog_photo:
                 dialog.dismiss();
-                this.openAlbum(Enums.Camera.UPLOADVISITOR);
+                this.openAlbum(Enums.Camera.UPLOADVISITOR, faceImage);
                 break;
             case R.id.photo_dialog_cancel:
                 dialog.dismiss();

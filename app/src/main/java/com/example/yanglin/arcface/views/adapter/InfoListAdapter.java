@@ -55,6 +55,11 @@ public class InfoListAdapter extends RecyclerView.Adapter<InfoViewHolder> implem
         notifyDataSetChanged();
     }
 
+    public void addNew( List<Info.DataBean.DatasBean> list){
+        this.InfoList.addAll(list);
+        notifyDataSetChanged();
+    }
+
 
     /**
      * 绑定数据到hodel
@@ -66,7 +71,7 @@ public class InfoListAdapter extends RecyclerView.Adapter<InfoViewHolder> implem
         Info.DataBean.DatasBean info = InfoList.get(position); // 获取menu item
 
         //将position保存在itemView的Tag中，以便点击时进行获取
-        holder.itemView.setTag(position);
+        holder.itemView.setTag(info);
         holder.infoImage.setImageResource(R.mipmap.clock);
         holder.infoTitle.setText(info.getTitle());
         holder.infoContent.setText(info.getContent());
@@ -85,7 +90,8 @@ public class InfoListAdapter extends RecyclerView.Adapter<InfoViewHolder> implem
     @Override
     public void onClick(View view) {
         if(mOnItemClickListener != null){
-            mOnItemClickListener.onItemClick(view, (int)view.getTag());
+            Info.DataBean.DatasBean info = (Info.DataBean.DatasBean)view.getTag();
+            mOnItemClickListener.onItemClick(view, info.getId());
         }
     }
     public void setOnItemClickListener(OnItemClickListener listener) {

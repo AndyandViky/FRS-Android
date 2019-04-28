@@ -18,4 +18,14 @@ public class NoticeCtrl extends OkhttpService{
         }
         this.doGet(okHttpClient, url, listener);
     }
+
+    public void setReaded(OkHttpClient okHttpClient, String data, OnResponseListener listener) {
+        String url = baseUrl + "/notice";
+        this.doPut(okHttpClient, url, data, listener);
+    }
+
+    public void getUnReadCount(OkHttpClient okHttpClient, OnResponseListener listener) {
+        String url = baseUrl + "/notice/unread";
+        this.doGet(okHttpClient, url, listener);
+    }
 }

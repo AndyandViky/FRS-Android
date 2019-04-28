@@ -125,6 +125,7 @@
                         android:layout_height="match_parent"
                         android:layout_alignParentRight="true">
                         <TextView
+                            android:id="@+id/info_unread_count"
                             android:layout_marginTop="15dp"
                             android:layout_width="20dp"
                             android:layout_height="20dp"

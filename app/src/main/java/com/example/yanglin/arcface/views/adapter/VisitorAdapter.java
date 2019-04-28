@@ -1,5 +1,6 @@
 package com.example.yanglin.arcface.views.adapter;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,16 +12,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.yanglin.arcface.R;
+import com.example.yanglin.arcface.controllers.UserCtrl;
 import com.example.yanglin.arcface.models.Record;
 import com.example.yanglin.arcface.models.Visitor;
+import com.example.yanglin.arcface.utils.OkhttpService;
 import com.example.yanglin.arcface.views.ApplyBugActivity;
 import com.example.yanglin.arcface.views.VisitorActivity;
 import com.example.yanglin.arcface.views.dialog.CenterDialog;
 
+import java.io.IOException;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.OkHttpClient;
 
 /**
  * Created by yanglin on 18-3-20.
@@ -67,7 +72,7 @@ public class VisitorAdapter extends RecyclerView.Adapter<VisitorViewHolder> impl
         String createTime = visitor.getCreated_at();
 
         //将position保存在itemView的Tag中，以便点击时进行获取
-        holder.itemView.setTag(position);
+        holder.itemView.setTag(visitor.getVisitor_id());
         holder.name.setText("访客: "+visitor.getPeople().getName());
         Object phone = visitor.getPeople().getPhone();
         if(phone instanceof String) {
@@ -84,6 +89,11 @@ public class VisitorAdapter extends RecyclerView.Adapter<VisitorViewHolder> impl
 
     public void replace( List<Visitor.DataBean.DatasBean> list){
         this.VisitorList.clear();
+        this.VisitorList.addAll(list);
+        notifyDataSetChanged();
+    }
+
+    public void addNew( List<Visitor.DataBean.DatasBean> list){
         this.VisitorList.addAll(list);
         notifyDataSetChanged();
     }
@@ -127,6 +137,10 @@ class VisitorViewHolder extends RecyclerView.ViewHolder implements CenterDialog.
     TextView reason;
     @BindView(R.id.apply_status_button)
     Button statusButton;
+    OkHttpClient okHttpClient = new OkHttpClient();
+    UserCtrl userCtrl = new UserCtrl();
+    int visitorId;
+
     public VisitorViewHolder(final View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
@@ -140,7 +154,7 @@ class VisitorViewHolder extends RecyclerView.ViewHolder implements CenterDialog.
             public void onClick(View view) {
                 String type = statusButton.getText().toString();
                 if(type!= null && type.equals("审核")) {
-                    int i = getAdapterPosition();
+                    visitorId = (int) itemView.getTag();
                     centerDialog.show();
                 }
             }
@@ -148,12 +162,24 @@ class VisitorViewHolder extends RecyclerView.ViewHolder implements CenterDialog.
     }
 
     @Override
-    public void OnCenterItemClick(CenterDialog dialog, View view) {
+    public void OnCenterItemClick(CenterDialog dialog, final View view) {
         switch (view.getId()) {
             case R.id.dialog_sure:
                 dialog.dismiss();
-                Toast.makeText(view.getContext(), "审核成功", Toast.LENGTH_SHORT).show();
-                statusButton.setText("已审核");
+                userCtrl.approveVisite(okHttpClient, "{\"visitorId\": \""+visitorId+"\"}", new OkhttpService.OnResponseListener() {
+                    @Override
+                    public void onSuccess(String result) {
+                        statusButton.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                statusButton.setText("已审核");
+                            }
+                        });
+                    }
+                    @Override
+                    public void onFailure(IOException error) {
+                    }
+                });
                 break;
             case R.id.dialog_cancel:
                 dialog.dismiss();

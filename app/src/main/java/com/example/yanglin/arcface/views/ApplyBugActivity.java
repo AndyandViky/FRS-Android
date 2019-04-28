@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.yanglin.arcface.R;
@@ -38,6 +39,10 @@ public class ApplyBugActivity extends CameraUtil implements  CenterDialog.OnCent
     private BottomDialog bottomDialog;
     OkHttpClient okHttpClient = new OkHttpClient();
     BugCtrl bugCtrl = new BugCtrl();
+
+    @BindView(R.id.bug_apply_image)
+    ImageView bugImage;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,7 +86,7 @@ public class ApplyBugActivity extends CameraUtil implements  CenterDialog.OnCent
                     return;
                 }
                 ApplyBug applyBug = new ApplyBug();
-                applyBug.setTitle("123");
+                applyBug.setTitle("故障申报");
                 applyBug.setContent(content);
                 if (this.getPath() != null) {
                     applyBug.setPath(this.getPath());
@@ -136,11 +141,11 @@ public class ApplyBugActivity extends CameraUtil implements  CenterDialog.OnCent
         switch (view.getId()) {
             case R.id.photo_dialog_camera:
                 dialog.dismiss();
-                this.openCamera(Enums.Camera.UPLOADBUG);
+                this.openCamera(Enums.Camera.UPLOADBUG, bugImage);
                 break;
             case R.id.photo_dialog_photo:
                 dialog.dismiss();
-                this.openAlbum(Enums.Camera.UPLOADBUG);
+                this.openAlbum(Enums.Camera.UPLOADBUG, bugImage);
                 break;
             case R.id.photo_dialog_cancel:
                 dialog.dismiss();

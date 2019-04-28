@@ -2,7 +2,6 @@ package com.example.yanglin.arcface.views.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.RecyclerView;
@@ -10,20 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.yanglin.arcface.R;
-import com.example.yanglin.arcface.models.Community;
 import com.example.yanglin.arcface.models.FaceImage;
-import com.example.yanglin.arcface.models.Info;
-import com.example.yanglin.arcface.models.Record;
 import com.example.yanglin.arcface.utils.OkhttpService;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 
 import butterknife.BindView;
@@ -66,7 +56,7 @@ public class FaceImageAdapter extends RecyclerView.Adapter<FaceImageAdapter.Face
         // 数据传入
 
         //将position保存在itemView的Tag中，以便点击时进行获取
-        holder.itemView.setTag(position);
+        holder.itemView.setTag(faceImage.getId());
         picturePath = OkhttpService.basePath + faceImage.getModel_image().substring(6);
         final Handler handler = new Handler() {
             @Override

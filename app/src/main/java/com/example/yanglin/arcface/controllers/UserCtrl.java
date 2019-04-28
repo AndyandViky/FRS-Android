@@ -15,6 +15,11 @@ public class UserCtrl extends OkhttpService{
         this.doPost(okHttpClient, url, data, listener);
     }
 
+    public void approveVisite(OkHttpClient okHttpClient, String data, OnResponseListener listener) {
+        String url = baseUrl + "/visite";
+        this.doPut(okHttpClient, url, data, listener);
+    }
+
     public void openDoor(OkHttpClient okHttpClient, String data, OnResponseListener listener) {
         String url = baseUrl + "/open/door";
         this.doPost(okHttpClient, url, data, listener);
@@ -44,5 +49,15 @@ public class UserCtrl extends OkhttpService{
             url = url + "?isActive=" + status;
         }
         this.doGet(okHttpClient, url, listener);
+    }
+
+    public void deleteFaceImage(OkHttpClient okHttpClient, String data, OnResponseListener listener) {
+        String url = "/face";
+        this.doDelete(okHttpClient, url, data, listener);
+    }
+
+    public void activeFaceImage(OkHttpClient okHttpClient, String data, OnResponseListener listener) {
+        String url = "/face/active";
+        this.doPut(okHttpClient, url, data, listener);
     }
 }

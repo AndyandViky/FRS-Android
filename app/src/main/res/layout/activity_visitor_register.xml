@@ -227,17 +227,25 @@
             android:src="@mipmap/plus"
             android:layout_marginLeft="40dp"
             />
-        <Button
-            style="?android:attr/borderlessButtonStyle"
-            android:id="@+id/visitor_validate_image"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_centerVertical="true"
-            android:text="检测人脸"
-            android:textColor="#ffffff"
-            android:background="@drawable/b_rectangle"
-            android:layout_marginLeft="30dp"
-            android:layout_toRightOf="@+id/visitor_image"/>
+        <!--<Button-->
+            <!--style="?android:attr/borderlessButtonStyle"-->
+            <!--android:id="@+id/visitor_validate_image"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="30dp"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:text="检测人脸"-->
+            <!--android:textColor="#ffffff"-->
+            <!--android:background="@drawable/b_rectangle"-->
+            <!--android:layout_marginLeft="30dp"-->
+            <!--android:layout_toRightOf="@+id/visitor_image"/>-->
+        <ImageView
+            android:id="@+id/face_image"
+            android:layout_width="80dp"
+            android:layout_height="60dp"
+            android:layout_toRightOf="@+id/visitor_image"
+            android:src="@mipmap/article2"
+            android:layout_marginLeft="45dp"
+            />
     </RelativeLayout>
     <Button
         android:id="@+id/visitor_register_button"

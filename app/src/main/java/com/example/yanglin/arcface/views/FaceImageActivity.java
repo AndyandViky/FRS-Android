@@ -30,6 +30,8 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,6 +46,7 @@ public class FaceImageActivity extends CameraUtil implements  CenterDialog.OnCen
     private CenterDialog centerDialog;
     private BottomDialog bottomDialog;
     private static final int CHOOSE_PHOTO = 2;
+    String LongClickItemId;
 
     @BindView(R.id.face_all_text)
     TextView textAll;
@@ -68,6 +71,7 @@ public class FaceImageActivity extends CameraUtil implements  CenterDialog.OnCen
     private Dialog Loadding;
     UserCtrl userCtrl;
     FaceImage faceImage;
+    int currentIndex = -1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,12 +91,13 @@ public class FaceImageActivity extends CameraUtil implements  CenterDialog.OnCen
         faceImageAdapter.setOnItemLongClickListener(new FaceImageAdapter.OnItemLongClickListener() {
             @Override
             public void onItemLongClick(View view, int position) {
+                LongClickItemId = view.getTag().toString();
                 centerDialog.show();
             }
         });
         faceImageRecycleView.setAdapter(faceImageAdapter);
         userCtrl = new UserCtrl();
-        getFaceImage(-1);
+        getFaceImage(currentIndex, true);
     }
 
     @OnClick(R.id.face_image_back)
@@ -102,21 +107,24 @@ public class FaceImageActivity extends CameraUtil implements  CenterDialog.OnCen
 
     @OnClick(R.id.face_all)
     void clickAll() {
-        getFaceImage(-1);
+        currentIndex = -1;
+        getFaceImage(currentIndex, true);
         clearStyle();
         textAll.setTextColor(borderColor);
         borderAll.setBackgroundColor(borderColor);
     }
     @OnClick(R.id.face_wait_use)
     void clickWaitPass() {
-        getFaceImage(0);
+        currentIndex = 0;
+        getFaceImage(currentIndex, true);
         clearStyle();
         textWait.setTextColor(borderColor);
         borderWait.setBackgroundColor(borderColor);
     }
     @OnClick(R.id.face_use)
     void clickPassed() {
-        getFaceImage(1);
+        currentIndex = 1;
+        getFaceImage(currentIndex, true);
         clearStyle();
         textPassed.setTextColor(borderColor);
         borderPassed.setBackgroundColor(borderColor);
@@ -139,11 +147,34 @@ public class FaceImageActivity extends CameraUtil implements  CenterDialog.OnCen
         switch (view.getId()) {
             case R.id.face_cancel:
                 dialog.dismiss();
+                Loadding = LoaddingDialog.createLoadingDialog(FaceImageActivity.this, "加载中...");
+                userCtrl.deleteFaceImage(okHttpClient, "{\"modelId\": \""+LongClickItemId+"\"}", new OkhttpService.OnResponseListener() {
+                    @Override
+                    public void onSuccess(String result) {
+                        getFaceImage(currentIndex, false);
+                        LoaddingDialog.closeDialog(Loadding);
+                    }
+                    @Override
+                    public void onFailure(IOException error) {
+                        LoaddingDialog.closeDialog(Loadding);
+                    }
+                });
                 Toast.makeText(FaceImageActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.face_sure:
                 dialog.dismiss();
-                Toast.makeText(FaceImageActivity.this, "启用成功", Toast.LENGTH_SHORT).show();
+                Loadding = LoaddingDialog.createLoadingDialog(FaceImageActivity.this, "加载中...");
+                userCtrl.activeFaceImage(okHttpClient, "{\"modelId\": \""+LongClickItemId+"\"}", new OkhttpService.OnResponseListener() {
+                    @Override
+                    public void onSuccess(String result) {
+                        getFaceImage(currentIndex, false);
+                        LoaddingDialog.closeDialog(Loadding);
+                    }
+                    @Override
+                    public void onFailure(IOException error) {
+                        LoaddingDialog.closeDialog(Loadding);
+                    }
+                });
                 break;
             default:
                 dialog.dismiss();
@@ -156,11 +187,11 @@ public class FaceImageActivity extends CameraUtil implements  CenterDialog.OnCen
         switch (view.getId()) {
             case R.id.photo_dialog_camera:
                 dialog.dismiss();
-                this.openCamera(Enums.Camera.UPLOADFACE);
+                // this.openCamera(Enums.Camera.UPLOADFACE);
                 break;
             case R.id.photo_dialog_photo:
                 dialog.dismiss();
-                this.openAlbum(Enums.Camera.UPLOADFACE);
+                // this.openAlbum(Enums.Camera.UPLOADFACE);
                 break;
             case R.id.photo_dialog_cancel:
                 dialog.dismiss();
@@ -175,8 +206,8 @@ public class FaceImageActivity extends CameraUtil implements  CenterDialog.OnCen
         bottomDialog.show();
     }
 
-    void getFaceImage(int status) {
-        Loadding = LoaddingDialog.createLoadingDialog(FaceImageActivity.this, "加载中...");
+    void getFaceImage(int status, final Boolean isFistIn) {
+        if(isFistIn) Loadding = LoaddingDialog.createLoadingDialog(FaceImageActivity.this, "加载中...");
         userCtrl.getFaceImages(okHttpClient, status, new OkhttpService.OnResponseListener() {
             @Override
             public void onSuccess(String result) {
@@ -187,14 +218,14 @@ public class FaceImageActivity extends CameraUtil implements  CenterDialog.OnCen
                     @Override
                     public void run() {
                         faceImageAdapter.replace(faceImage.getData());
-                        LoaddingDialog.closeDialog(Loadding);
+                        if(isFistIn) LoaddingDialog.closeDialog(Loadding);
                     }
                 });
             }
 
             @Override
             public void onFailure(IOException error) {
-                LoaddingDialog.closeDialog(Loadding);
+                if(isFistIn) LoaddingDialog.closeDialog(Loadding);
             }
         });
     }

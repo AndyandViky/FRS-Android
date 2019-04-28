@@ -1,5 +1,6 @@
 package com.example.yanglin.arcface.models;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -87,7 +88,7 @@ public class Info {
             this.datas = datas;
         }
 
-        public static class DatasBean {
+        public static class DatasBean implements Serializable {
             /**
              * id : 1
              * people_id : 2

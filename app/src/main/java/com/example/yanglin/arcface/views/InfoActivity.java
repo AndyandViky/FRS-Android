@@ -57,6 +57,11 @@ public class InfoActivity extends AppCompatActivity {
     private Dialog Loadding;
     NoticeCtrl noticeCtrl;
 
+    int pageNo = 1;
+    int currentStatus = -1;
+    int pageSize = 5;
+    int totalCount = 0;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,14 +75,16 @@ public class InfoActivity extends AppCompatActivity {
 
             @Override
             public void onItemClick(View view, int position) {
-                startActivity(new Intent(InfoActivity.this, InfoDetailActivity.class));
-                Toast.makeText(InfoActivity.this,String.valueOf(position),Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(InfoActivity.this, InfoDetailActivity.class);
+                Info.DataBean.DatasBean info = (Info.DataBean.DatasBean) view.getTag();
+                intent.putExtra("info", info);
+                startActivity(intent);
             }
         });
 
         infoRecyclerView.setAdapter(infoListAdapter);
         noticeCtrl = new NoticeCtrl();
-        getNotice(1, 10, -1);
+        getNotice(pageNo, pageSize, currentStatus);
     }
 
     @OnClick(R.id.info_back)
@@ -87,21 +94,27 @@ public class InfoActivity extends AppCompatActivity {
 
     @OnClick(R.id.info_all)
     void clickAll() {
-        getNotice(1, 10, -1);
+        currentStatus = -1;
+        pageNo = 1;
+        getNotice(pageNo, pageSize, currentStatus);
         clearStyle();
         textAll.setTextColor(borderColor);
         borderAll.setBackgroundColor(borderColor);
     }
     @OnClick(R.id.info_wait_read)
     void clickWaitPass() {
-        getNotice(1, 10, 0);
+        currentStatus = 0;
+        pageNo = 1;
+        getNotice(pageNo, pageSize, currentStatus);
         clearStyle();
         textWait.setTextColor(borderColor);
         borderWait.setBackgroundColor(borderColor);
     }
     @OnClick(R.id.info_read)
     void clickPassed() {
-        getNotice(1, 10, 1);
+        currentStatus = 1;
+        pageNo = 1;
+        getNotice(pageNo, pageSize, currentStatus);
         clearStyle();
         textPassed.setTextColor(borderColor);
         borderPassed.setBackgroundColor(borderColor);
@@ -118,7 +131,7 @@ public class InfoActivity extends AppCompatActivity {
         borderWait.setBackgroundColor(wite);
         borderPassed.setBackgroundColor(wite);
     }
-    void getNotice(int pageNo, int pageSize, int status) {
+    void getNotice(final int pageNo, int pageSize, int status) {
         Loadding = LoaddingDialog.createLoadingDialog(InfoActivity.this, "加载中...");
         noticeCtrl.getNotice(okHttpClient, pageNo, pageSize, status, new OkhttpService.OnResponseListener() {
             @Override
@@ -129,7 +142,9 @@ public class InfoActivity extends AppCompatActivity {
                 infoRecyclerView.post(new Runnable() {
                     @Override
                     public void run() {
-                        infoListAdapter.replace(info.getData().getDatas());
+                        totalCount = info.getData().getTotal();
+                        if(pageNo == 1) infoListAdapter.replace(info.getData().getDatas());
+                        else infoListAdapter.addNew(info.getData().getDatas());
                         LoaddingDialog.closeDialog(Loadding);
                     }
                 });
@@ -140,5 +155,16 @@ public class InfoActivity extends AppCompatActivity {
                 LoaddingDialog.closeDialog(Loadding);
             }
         });
+    }
+
+    @OnClick(R.id.info_more_button)
+    void getMore() {
+        if((pageNo)*pageSize >= totalCount) {
+            Toast.makeText(InfoActivity.this, "没有更多数据了！", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            pageNo++;
+            getNotice(pageNo, pageSize, currentStatus);
+        }
     }
 }

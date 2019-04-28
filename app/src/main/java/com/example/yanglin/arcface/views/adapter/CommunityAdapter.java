@@ -65,7 +65,7 @@ public class CommunityAdapter extends RecyclerView.Adapter<CommunityViewHolder> 
         // 数据传入
 
         //将position保存在itemView的Tag中，以便点击时进行获取
-        holder.itemView.setTag(position);
+        holder.itemView.setTag(community);
         holder.infoTitle.setText(community.getTitle());
         String category = community.getCategory();
         switch (category) {
@@ -94,6 +94,11 @@ public class CommunityAdapter extends RecyclerView.Adapter<CommunityViewHolder> 
         notifyDataSetChanged();
     }
 
+    public void addNew( List<Community.DataBean.DatasBean> list){
+        this.communityList.addAll(list);
+        notifyDataSetChanged();
+    }
+
     /**
      * 获取当前item数量
      * @return
@@ -106,7 +111,8 @@ public class CommunityAdapter extends RecyclerView.Adapter<CommunityViewHolder> 
     @Override
     public void onClick(View view) {
         if(mOnItemClickListener != null){
-            mOnItemClickListener.onItemClick(view, (int)view.getTag());
+            Community.DataBean.DatasBean article = (Community.DataBean.DatasBean)view.getTag();
+            mOnItemClickListener.onItemClick(view, article.getId());
         }
     }
     public void setOnItemClickListener(OnItemClickListener listener) {

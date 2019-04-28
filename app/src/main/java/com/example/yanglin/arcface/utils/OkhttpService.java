@@ -139,9 +139,9 @@ public class OkhttpService {
         return null;
     }
 
-    protected String upLoad(String url, String path, final OnResponseListener listener) {
+    protected String upLoad(String url, File file, final OnResponseListener listener) {
         url = basePath+url;
-        File file = new File("", path);
+        String path = file.getPath();
         RequestBody fileBody = RequestBody.create(MediaType.parse("application/octet-stream"), file);
         RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)

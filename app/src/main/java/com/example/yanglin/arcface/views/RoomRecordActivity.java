@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Toast;
 
 import com.example.yanglin.arcface.R;
 import com.example.yanglin.arcface.controllers.UserCtrl;
@@ -32,12 +33,15 @@ import okhttp3.OkHttpClient;
 public class RoomRecordActivity extends AppCompatActivity {
     @BindView(R.id.record_list)
     RecyclerView recordRecyclerView;
-    int currentPosition;
     Record record;
     RecordListAdapter recordListAdapter;
     OkHttpClient okHttpClient = new OkHttpClient();
     private Dialog Loadding;
+    UserCtrl userCtrl = new UserCtrl();
 
+    int pageNo = 1;
+    int pageSize = 5;
+    int totalCount = 0;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,9 +53,22 @@ public class RoomRecordActivity extends AppCompatActivity {
 
         recordListAdapter = new RecordListAdapter(RoomRecordActivity.this, new ArrayList<Record.DataBean.DatasBean>());
         recordRecyclerView.setAdapter(recordListAdapter);
-        UserCtrl userCtrl = new UserCtrl();
+        getRoomRecord(pageNo, pageSize);
+    }
+
+    @OnClick(R.id.record_more_button)
+    void getMoreRecord() {
+
+    }
+
+    @OnClick(R.id.record_back)
+    void recordBack() {
+        RoomRecordActivity.this.finish();
+    }
+
+    void getRoomRecord(final int pageNo, int pageSize) {
         Loadding = LoaddingDialog.createLoadingDialog(RoomRecordActivity.this, "加载中...");
-        userCtrl.getGateRecord(okHttpClient, 1, 10, new OkhttpService.OnResponseListener() {
+        userCtrl.getGateRecord(okHttpClient, pageNo, pageSize, new OkhttpService.OnResponseListener() {
             @Override
             public void onSuccess(String result) {
                 Gson gson = new Gson();
@@ -60,7 +77,9 @@ public class RoomRecordActivity extends AppCompatActivity {
                 recordRecyclerView.post(new Runnable() {
                     @Override
                     public void run() {
-                        recordListAdapter.replace(record.getData().getDatas());
+                        totalCount = record.getData().getTotal();
+                        if(pageNo == 1) recordListAdapter.replace(record.getData().getDatas());
+                        else recordListAdapter.addNew(record.getData().getDatas());
                         LoaddingDialog.closeDialog(Loadding);
                     }
                 });
@@ -74,12 +93,13 @@ public class RoomRecordActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.record_more_button)
-    void getMoreRecord() {
-
-    }
-
-    @OnClick(R.id.record_back)
-    void recordBack() {
-        RoomRecordActivity.this.finish();
+    void getMore() {
+        if((pageNo)*pageSize >= totalCount) {
+            Toast.makeText(RoomRecordActivity.this, "没有更多数据了！", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            pageNo++;
+            getRoomRecord(pageNo, pageSize);
+        }
     }
 }

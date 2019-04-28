@@ -57,6 +57,11 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordViewHolder> im
         notifyDataSetChanged();
     }
 
+    public void addNew( List<Record.DataBean.DatasBean> list){
+        this.RecordList.addAll(list);
+        notifyDataSetChanged();
+    }
+
 
     /**
      * 绑定数据到hodel

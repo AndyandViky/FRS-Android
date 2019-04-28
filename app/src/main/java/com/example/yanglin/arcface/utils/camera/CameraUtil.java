@@ -3,12 +3,10 @@ package com.example.yanglin.arcface.utils.camera;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.ContentUris;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.DocumentsContract;
@@ -18,17 +16,20 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.yanglin.arcface.controllers.AttachmentCtrl;
 import com.example.yanglin.arcface.models.Attachment;
 import com.example.yanglin.arcface.models.BaseResponse;
+import com.example.yanglin.arcface.utils.BitmapUtils;
 import com.example.yanglin.arcface.utils.Enums;
 import com.example.yanglin.arcface.utils.OkhttpService;
 import com.example.yanglin.arcface.views.FaceImageActivity;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 
@@ -45,8 +46,12 @@ public class CameraUtil extends AppCompatActivity{
     private Enums.Camera type;
     private String imageUrl = "";
     AttachmentCtrl attachmentCtrl = new AttachmentCtrl();
+    private Bitmap attachmentImage = null;
 
-    protected void openCamera(Enums.Camera type) {
+    ImageView imageView;
+
+    protected void openCamera(Enums.Camera type, ImageView view) {
+        imageView = view;
         this.type = type;
         //创建file对象，用于存储拍照后的图片；
         File outputImage = new File(getExternalCacheDir(), "output_image.jpg");
@@ -73,7 +78,8 @@ public class CameraUtil extends AppCompatActivity{
         startActivityForResult(intent, TAKE_PHOTO);
     }
 
-    protected void openAlbum(Enums.Camera type) {
+    protected void openAlbum(Enums.Camera type, ImageView view) {
+        imageView = view;
         this.type = type;
         if (ContextCompat.checkSelfPermission(CameraUtil.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(CameraUtil.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
@@ -108,7 +114,12 @@ public class CameraUtil extends AppCompatActivity{
             case TAKE_PHOTO:
                 if (resultCode == RESULT_OK) {
                     try {
-                        attachmentCtrl.uploadImage(imageUri.getPath(), new OkhttpService.OnResponseListener() {
+                        String path = imageUri.getPath();
+                        attachmentImage = BitmapUtils.decodeSampledBitmapFromFd(path, 640, 480);
+                        imageView.setImageBitmap(attachmentImage);
+                        File file = BitmapUtils.compressImage(attachmentImage);
+
+                        attachmentCtrl.uploadImage(file, new OkhttpService.OnResponseListener() {
                             @Override
                             public void onSuccess(String result) {
                                 java.lang.reflect.Type type = new TypeToken<Attachment>() {}.getType();
@@ -141,18 +152,18 @@ public class CameraUtil extends AppCompatActivity{
                                 });
                             }
                         });
-                        switch (this.type) {
-                            case UPLOADFACE:
-                                break;
-                            case UPLOADVISITOR:
-                                break;
-                            case UPLOADBUG:
-                                break;
-                            case UPLOADAVATAR:
-                                break;
-                            default:
-                                break;
-                        }
+//                        switch (this.type) {
+//                            case UPLOADFACE:
+//                                break;
+//                            case UPLOADVISITOR:
+//                                break;
+//                            case UPLOADBUG:
+//                                break;
+//                            case UPLOADAVATAR:
+//                                break;
+//                            default:
+//                                break;
+//                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -220,7 +231,11 @@ public class CameraUtil extends AppCompatActivity{
     }
     private void displayImage(String imagePath) {
         if (imagePath != null) {
-            attachmentCtrl.uploadImage(imagePath, new OkhttpService.OnResponseListener() {
+            attachmentImage = BitmapUtils.decodeSampledBitmapFromFd(imagePath, 640, 480);
+            imageView.setImageBitmap(attachmentImage);
+            File file = BitmapUtils.compressImage(attachmentImage);
+
+            attachmentCtrl.uploadImage(file, new OkhttpService.OnResponseListener() {
                 @Override
                 public void onSuccess(String result) {
                     java.lang.reflect.Type type = new TypeToken<Attachment>() {}.getType();
@@ -253,18 +268,18 @@ public class CameraUtil extends AppCompatActivity{
                     });
                 }
             });
-            switch (this.type) {
-                case UPLOADFACE:
-                    break;
-                case UPLOADVISITOR:
-                    break;
-                case UPLOADBUG:
-                    break;
-                case UPLOADAVATAR:
-                    break;
-                default:
-                    break;
-            }
+//            switch (this.type) {
+//                case UPLOADFACE:
+//                    break;
+//                case UPLOADVISITOR:
+//                    break;
+//                case UPLOADBUG:
+//                    break;
+//                case UPLOADAVATAR:
+//                    break;
+//                default:
+//                    break;
+//            }
         } else {
             Toast.makeText(this, "failed to get image", Toast.LENGTH_SHORT).show();
         }

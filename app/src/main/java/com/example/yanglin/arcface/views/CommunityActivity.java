@@ -43,6 +43,10 @@ public class CommunityActivity extends AppCompatActivity {
     UserCtrl userCtrl;
     Community community;
 
+    int pageNo = 1;
+    int pageSize = 5;
+    int totalCount = 0;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,14 +60,25 @@ public class CommunityActivity extends AppCompatActivity {
 
             @Override
             public void onItemClick(View view, int position) {
-                startActivity(new Intent(CommunityActivity.this, CommunityTrendsDetailActivity.class));
-                Toast.makeText(CommunityActivity.this,String.valueOf(position),Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(CommunityActivity.this, CommunityTrendsDetailActivity.class);
+                Community.DataBean.DatasBean article = (Community.DataBean.DatasBean) view.getTag();
+                intent.putExtra("article", article);
+                startActivity(intent);
             }
         });
         communityRecycleView.setAdapter(communityAdapter);
         userCtrl = new UserCtrl();
+        getArticles(pageNo, pageSize);
+    }
+
+    @OnClick(R.id.commmunity_back)
+    void backMain() {
+        CommunityActivity.this.finish();
+    }
+
+    void getArticles(final int pageNo, int pageSize) {
         Loadding = LoaddingDialog.createLoadingDialog(CommunityActivity.this, "加载中...");
-        userCtrl.getArticles(okHttpClient, 1, 10, new OkhttpService.OnResponseListener() {
+        userCtrl.getArticles(okHttpClient, pageNo, pageSize, new OkhttpService.OnResponseListener() {
             @Override
             public void onSuccess(String result) {
                 Gson gson = new Gson();
@@ -72,7 +87,9 @@ public class CommunityActivity extends AppCompatActivity {
                 communityRecycleView.post(new Runnable() {
                     @Override
                     public void run() {
-                        communityAdapter.replace(community.getData().getDatas());
+                        totalCount = community.getData().getTotal();
+                        if(pageNo == 1) communityAdapter.replace(community.getData().getDatas());
+                        else communityAdapter.addNew(community.getData().getDatas());
                         LoaddingDialog.closeDialog(Loadding);
                     }
                 });
@@ -85,8 +102,14 @@ public class CommunityActivity extends AppCompatActivity {
         });
     }
 
-    @OnClick(R.id.commmunity_back)
-    void backMain() {
-        CommunityActivity.this.finish();
+    @OnClick(R.id.community_more_button)
+    void getMore() {
+        if((pageNo)*pageSize >= totalCount) {
+            Toast.makeText(CommunityActivity.this, "没有更多数据了！", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            pageNo++;
+            getArticles(pageNo, pageSize);
+        }
     }
 }

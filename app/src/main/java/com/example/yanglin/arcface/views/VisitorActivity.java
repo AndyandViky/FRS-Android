@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.yanglin.arcface.R;
 import com.example.yanglin.arcface.controllers.UserCtrl;
@@ -46,17 +47,20 @@ public class VisitorActivity extends AppCompatActivity {
     View borderWait;
     @BindView(R.id.visitor_passed_border)
     View borderPassed;
-    int borderColor = 0xff48D1CC;
-
-    List<Visitor> visitorList = new ArrayList<>();
-    VisitorAdapter visitorAdapter;
     @BindView(R.id.visitor_list)
     RecyclerView visitorListView;
 
+    int borderColor = 0xff48D1CC;
+    VisitorAdapter visitorAdapter;
     Visitor visitor;
     OkHttpClient okHttpClient = new OkHttpClient();
     private Dialog Loadding;
     UserCtrl userCtrl;
+
+    int pageNo = 1;
+    int currentStatus = -1;
+    int pageSize = 10;
+    int totalCount = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,16 +71,9 @@ public class VisitorActivity extends AppCompatActivity {
 
         visitorListView.setLayoutManager(new LinearLayoutManager(this));
         visitorAdapter = new VisitorAdapter(this, new ArrayList<Visitor.DataBean.DatasBean>());
-        visitorAdapter.setOnItemClickListener(new VisitorAdapter.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(View view, int position) {
-               // Toast.makeText(VisitorActivity.this,String.valueOf(position),Toast.LENGTH_SHORT).show();
-            }
-        });
         visitorListView.setAdapter(visitorAdapter);
         userCtrl = new UserCtrl();
-        getVisitorHttp(1, 10, -1);
+        getVisitorHttp(pageNo, pageSize, currentStatus);
     }
 
     @OnClick(R.id.visitor_list_back)
@@ -86,29 +83,27 @@ public class VisitorActivity extends AppCompatActivity {
 
     @OnClick(R.id.visitor_all)
     void clickAll() {
-        getVisitorHttp(1, 10, -1);
+        currentStatus = -1;
+        pageNo = 1;
+        getVisitorHttp(pageNo, pageSize, currentStatus);
         clearStyle();
         textAll.setTextColor(borderColor);
         borderAll.setBackgroundColor(borderColor);
     }
     @OnClick(R.id.visitor_wait_pass)
     void clickWaitPass() {
-        getVisitorHttp(1, 10, 0);
+        currentStatus = 0;
+        pageNo = 1;
+        getVisitorHttp(pageNo, pageSize, currentStatus);
         clearStyle();
         textWait.setTextColor(borderColor);
         borderWait.setBackgroundColor(borderColor);
     }
     @OnClick(R.id.visitor_passed)
     void clickPassed() {
-        getVisitorHttp(1, 10, 1);
-//        ArrayList<Visitor> visitors = new ArrayList<>();
-//        for(int i=0; i<visitorList.size(); i++) {
-//            if (visitorList.get(i).getType() == 1) {
-//                visitors.add((visitorList.get(i)));
-//            }
-//        }
-//        visitorAdapter = new VisitorAdapter(this, visitors);
-//        visitorListView.setAdapter(visitorAdapter);
+        currentStatus = 1;
+        pageNo = 1;
+        getVisitorHttp(pageNo, pageSize, currentStatus);
         clearStyle();
         textPassed.setTextColor(borderColor);
         borderPassed.setBackgroundColor(borderColor);
@@ -125,7 +120,7 @@ public class VisitorActivity extends AppCompatActivity {
         borderWait.setBackgroundColor(wite);
         borderPassed.setBackgroundColor(wite);
     }
-    void getVisitorHttp(int pageNo, int pageSize, int status) {
+    void getVisitorHttp(final int pageNo, int pageSize, int status) {
         Loadding = LoaddingDialog.createLoadingDialog(VisitorActivity.this, "加载中...");
         userCtrl.getVisitors(okHttpClient, pageNo, pageSize, status, new OkhttpService.OnResponseListener() {
             @Override
@@ -136,7 +131,9 @@ public class VisitorActivity extends AppCompatActivity {
                 visitorListView.post(new Runnable() {
                     @Override
                     public void run() {
-                        visitorAdapter.replace(visitor.getData().getDatas());
+                        totalCount = visitor.getData().getTotal();
+                        if(pageNo == 1) visitorAdapter.replace(visitor.getData().getDatas());
+                        else visitorAdapter.addNew(visitor.getData().getDatas());
                         LoaddingDialog.closeDialog(Loadding);
                     }
                 });
@@ -147,5 +144,16 @@ public class VisitorActivity extends AppCompatActivity {
                 LoaddingDialog.closeDialog(Loadding);
             }
         });
+    }
+
+    @OnClick(R.id.visitor_more_button)
+    void getMore() {
+        if((pageNo)*pageSize >= totalCount) {
+            Toast.makeText(VisitorActivity.this, "没有更多数据了！", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            pageNo++;
+            getVisitorHttp(pageNo, pageSize, currentStatus);
+        }
     }
 }
