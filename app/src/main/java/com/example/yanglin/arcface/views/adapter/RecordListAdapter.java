@@ -76,9 +76,9 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordViewHolder> im
         //将position保存在itemView的Tag中，以便点击时进行获取
         holder.itemView.setTag(position);
         holder.recordPeopleCount.setText(li.getCount()+"人");
-        holder.recordTime.setText(li.getCreated_at());
+        holder.recordTime.setText(li.getCreated_at().substring(0, 10) + " " + li.getCreated_at().substring(11, 19));
 
-        if(li.getType() == 1) {
+        if(li.getType() == 0) {
             // 摄像头
             holder.recordType.setImageResource(R.mipmap.camera_type);
         } else {
