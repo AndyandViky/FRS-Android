@@ -1,6 +1,9 @@
 package com.example.yanglin.arcface.views;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,14 +12,17 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.Spanned;
+import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.example.yanglin.arcface.R;
 import com.example.yanglin.arcface.models.Community;
+import com.example.yanglin.arcface.utils.LoaddingDialog;
 import com.example.yanglin.arcface.utils.systemBar.SystemBarUI;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -35,6 +41,7 @@ public class CommunityTrendsDetailActivity extends AppCompatActivity {
     TextView articleSendTime;
     @BindView(R.id.article_detail_content)
     TextView articleContent;
+    private Dialog Loadding;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,6 +63,7 @@ public class CommunityTrendsDetailActivity extends AppCompatActivity {
             CharSequence c= (CharSequence) msg.getData().get("data");
             TextView textView= (TextView) msg.obj;
             textView.setText(c);
+            LoaddingDialog.closeDialog(Loadding);
         }
     };
 
@@ -63,6 +71,7 @@ public class CommunityTrendsDetailActivity extends AppCompatActivity {
      * 加载html内容
      */
     public void loadHtmlText(final TextView textView, final String html) {
+        Loadding = LoaddingDialog.createLoadingDialog(CommunityTrendsDetailActivity.this, "加载中...");
         textView.post(new Runnable() {
             @Override
             public void run() {
@@ -78,14 +87,23 @@ public class CommunityTrendsDetailActivity extends AppCompatActivity {
                             public Drawable getDrawable(String source) {
                                 InputStream is = null;
                                 try {
-                                    is = (InputStream) new URL(source.replace("https", "http")).getContent();
+                                    URL myFileUrl = null;
+                                    myFileUrl = new URL(source);
+                                    HttpURLConnection conn = (HttpURLConnection) myFileUrl
+                                            .openConnection();
+                                    conn.setRequestProperty("Content-type", "application/json");
+                                    conn.setDoInput(true);
+                                    conn.connect();
+                                    is = conn.getInputStream();
                                     Drawable dra = Drawable.createFromStream(is, "src");
-                                    int i = dra.getIntrinsicWidth() * 13;
-                                    int i1 = dra.getIntrinsicHeight() * 13;
-                                    dra.setBounds(0, 0, i, i1);
-                                    if (i > screenWidth & i1 != 0) {
-                                        float i2 = (float) i / i1;
-                                        dra.setBounds(0, 0, screenWidth, (int) (screenWidth / i2));
+                                    if(dra != null) {
+                                        int i = dra.getIntrinsicWidth() * 13;
+                                        int i1 = dra.getIntrinsicHeight() * 13;
+                                        dra.setBounds(0, 0, i, i1);
+                                        if (i > screenWidth & i1 != 0) {
+                                            float i2 = (float) i / i1;
+                                            dra.setBounds(0, 0, screenWidth, (int) (screenWidth / i2));
+                                        }
                                     }
                                     return dra;
                                 } catch (MalformedURLException e) {
