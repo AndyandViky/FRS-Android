@@ -2,8 +2,6 @@ package com.example.yanglin.arcface.views;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,13 +10,15 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.Spanned;
-import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.example.yanglin.arcface.R;
+import com.example.yanglin.arcface.controllers.UserCtrl;
 import com.example.yanglin.arcface.models.Community;
 import com.example.yanglin.arcface.utils.LoaddingDialog;
+import com.example.yanglin.arcface.utils.OkhttpService;
 import com.example.yanglin.arcface.utils.systemBar.SystemBarUI;
+import java.util.Date;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,6 +29,7 @@ import java.net.URL;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.OkHttpClient;
 
 /**
  * Created by yanglin on 18-4-3.
@@ -42,6 +43,11 @@ public class CommunityTrendsDetailActivity extends AppCompatActivity {
     @BindView(R.id.article_detail_content)
     TextView articleContent;
     private Dialog Loadding;
+    private UserCtrl userCtrl = new UserCtrl();
+    OkHttpClient okHttpClient = new OkHttpClient();
+    Community.DataBean.DatasBean article;
+
+    private long timeGetTime;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,10 +57,12 @@ public class CommunityTrendsDetailActivity extends AppCompatActivity {
         SystemBarUI.initSystemBar(this, R.color.actionTitle);
 
         Intent intent = getIntent();
-        Community.DataBean.DatasBean article = (Community.DataBean.DatasBean)intent.getSerializableExtra("article");
+        article = (Community.DataBean.DatasBean)intent.getSerializableExtra("article");
         articleTitle.setText(article.getTitle());
         articleSendTime.setText(article.getCreated_at().substring(0, 10));
         loadHtmlText(articleContent, article.getContent());
+
+        timeGetTime = new Date().getTime();
     }
 
     private Handler mHandler=new Handler(){
@@ -66,6 +74,28 @@ public class CommunityTrendsDetailActivity extends AppCompatActivity {
             LoaddingDialog.closeDialog(Loadding);
         }
     };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(article.getCategory().equals("普通文章")) {
+            long duration = new Date().getTime() - timeGetTime;
+            userCtrl.addNewBehavior(okHttpClient,
+                    "{\"type\": \""+1+"\", \"categoryId\": " +
+                            "\""+article.getId()+"\", \"duration\": \""+duration+"\"}",
+                    new OkhttpService.OnResponseListener() {
+                        @Override
+                        public void onSuccess(String result) {
+
+                        }
+
+                        @Override
+                        public void onFailure(IOException error) {
+
+                        }
+                    });
+        }
+    }
 
     /**
      * 加载html内容

@@ -75,7 +75,7 @@ public class CommunityAdapter extends RecyclerView.Adapter<CommunityViewHolder> 
             case "小区动态":
                 holder.infoImage.setImageResource(R.mipmap.article2);
                 break;
-            case "失误招领":
+            case "失物招领":
                 holder.infoImage.setImageResource(R.mipmap.article3);
                 break;
             default:

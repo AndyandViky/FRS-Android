@@ -38,8 +38,8 @@ public class UserCtrl extends OkhttpService{
         this.doGet(okHttpClient, url, listener);
     }
 
-    public void getArticles(OkHttpClient okHttpClient, int pageNo, int pageSize, OnResponseListener listener) {
-        String url = baseUrl + "/articles?pageNo="+pageNo+"&pageSize="+pageSize;
+    public void getArticles(OkHttpClient okHttpClient, int pageNo, int pageSize, String category, OnResponseListener listener) {
+        String url = baseUrl + "/articles?pageNo=" + pageNo + "&pageSize=" + pageSize + "&category=" + category;
         this.doGet(okHttpClient, url, listener);
     }
 
@@ -59,5 +59,10 @@ public class UserCtrl extends OkhttpService{
     public void activeFaceImage(OkHttpClient okHttpClient, String data, OnResponseListener listener) {
         String url = "/face/active";
         this.doPut(okHttpClient, url, data, listener);
+    }
+
+    public void addNewBehavior(OkHttpClient okHttpClient, String data, OnResponseListener listener) {
+        String url = baseUrl + "/behavior";
+        this.doPost(okHttpClient, url, data, listener);
     }
 }

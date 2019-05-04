@@ -29,6 +29,80 @@
             android:layout_centerVertical="true"/>
 
     </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+        <LinearLayout
+            android:id="@+id/article_all"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:orientation="vertical"
+            android:gravity="center">
+            <TextView
+                android:id="@+id/article_all_text"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="文章"
+                android:gravity="center"
+                android:textColor="@color/actionTitle"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"/>
+            <View
+                android:id="@+id/article_all_border"
+                android:layout_width="70dp"
+                android:layout_height="4dp"
+                android:background="@color/actionTitle"
+                ></View>
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/article_other"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:orientation="vertical"
+            android:gravity="center">
+            <TextView
+                android:id="@+id/article_other_text"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="动态"
+                android:gravity="center"
+                android:textColor="#666666"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"/>
+            <View
+                android:id="@+id/article_other_border"
+                android:layout_width="70dp"
+                android:layout_height="4dp"
+                ></View>
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/article_recommond"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:orientation="vertical"
+            android:gravity="center">
+            <TextView
+                android:id="@+id/article_recommond_text"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="为你推荐"
+                android:textColor="#666666"
+                android:gravity="center"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"/>
+            <View
+                android:id="@+id/article_recommond_border"
+                android:layout_width="50dp"
+                android:layout_height="4dp"
+                ></View>
+
+        </LinearLayout>
+    </LinearLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
