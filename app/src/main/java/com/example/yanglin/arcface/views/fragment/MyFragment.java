@@ -1,6 +1,5 @@
 package com.example.yanglin.arcface.views.fragment;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,15 +11,16 @@ import android.widget.TextView;
 
 import com.example.yanglin.arcface.R;
 import com.example.yanglin.arcface.controllers.NoticeCtrl;
-import com.example.yanglin.arcface.models.Info;
-import com.example.yanglin.arcface.models.InfoCount;
-import com.example.yanglin.arcface.utils.LoaddingDialog;
+import com.example.yanglin.arcface.models.Base2Response;
+import com.example.yanglin.arcface.models.User;
+import com.example.yanglin.arcface.utils.Cache;
 import com.example.yanglin.arcface.utils.OkhttpService;
 import com.example.yanglin.arcface.views.AboutActivity;
 import com.example.yanglin.arcface.views.ChangeUserInfoActivity;
 import com.example.yanglin.arcface.views.CommunityActivity;
 import com.example.yanglin.arcface.views.FaceImageActivity;
 import com.example.yanglin.arcface.views.InfoActivity;
+import com.example.yanglin.arcface.views.LoginActivity;
 import com.example.yanglin.arcface.views.UpdatePwdActivity;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -44,19 +44,29 @@ public class MyFragment extends Fragment{
     @BindView(R.id.info_unread_count)
     TextView unreadCount;
 
+    @BindView(R.id.user_name)
+    TextView userName;
+    @BindView(R.id.user_num)
+    TextView userNum;
+    Cache cache = new Cache();
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_my,container,false);
         ButterKnife.bind(this, rootView);
+
+        User user = cache.getUser();
+        userName.setText(user.getData().getUser().getName());
+        userNum.setText(user.getData().getUser().getPhone());
         noticeCtrl.getUnReadCount(okHttpClient, new OkhttpService.OnResponseListener() {
             @Override
             public void onSuccess(String result) {
                 Gson gson = new Gson();
-                java.lang.reflect.Type type = new TypeToken<InfoCount>() {}.getType();
-                InfoCount infoCount = gson.fromJson(result, type);
-                int count = infoCount.getData();
-                unreadCount.setText(String.valueOf(count));
+                java.lang.reflect.Type type = new TypeToken<Base2Response>() {}.getType();
+                Base2Response base2Response = gson.fromJson(result, type);
+                String count = base2Response.getData();
+                unreadCount.setText(count);
             }
 
             @Override
@@ -111,5 +121,12 @@ public class MyFragment extends Fragment{
     void getCommunity() {
         Intent intent = new Intent(getActivity(), CommunityActivity.class);
         startActivity(intent);
+    }
+
+    @OnClick(R.id.logout)
+    void logout() {
+        cache.deleteUser();
+        startActivity(new Intent(getActivity(), LoginActivity.class));
+        getActivity().finish();
     }
 }

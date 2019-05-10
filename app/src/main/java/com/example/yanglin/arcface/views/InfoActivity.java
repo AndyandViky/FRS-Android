@@ -59,7 +59,7 @@ public class InfoActivity extends AppCompatActivity {
 
     int pageNo = 1;
     int currentStatus = -1;
-    int pageSize = 5;
+    int pageSize = 10;
     int totalCount = 0;
 
     @Override

@@ -75,7 +75,8 @@ public class FaceImageAdapter extends RecyclerView.Adapter<FaceImageAdapter.Face
             @Override
             public void run() {
                 // TODO Auto-generated method stub
-                OkhttpService.returnBitMap(picturePath, handler);
+                OkhttpService okhttpService = new OkhttpService();
+                okhttpService.returnBitMap(picturePath, handler);
             }
         }).start();
     }

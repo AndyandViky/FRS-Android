@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.yanglin.arcface.R;
@@ -14,6 +15,7 @@ import com.example.yanglin.arcface.controllers.NoticeCtrl;
 import com.example.yanglin.arcface.models.ApplyBug;
 import com.example.yanglin.arcface.models.BaseResponse;
 import com.example.yanglin.arcface.models.Info;
+import com.example.yanglin.arcface.utils.Cache;
 import com.example.yanglin.arcface.utils.Enums;
 import com.example.yanglin.arcface.utils.OkhttpService;
 import com.example.yanglin.arcface.utils.camera.CameraUtil;
@@ -42,6 +44,9 @@ public class ApplyBugActivity extends CameraUtil implements  CenterDialog.OnCent
 
     @BindView(R.id.bug_apply_image)
     ImageView bugImage;
+    @BindView(R.id.bug_user_name)
+    TextView bugUserName;
+    Cache cache = new Cache();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,6 +54,8 @@ public class ApplyBugActivity extends CameraUtil implements  CenterDialog.OnCent
         setContentView(R.layout.activity_bug_apply);
         ButterKnife.bind(this);
         SystemBarUI.initSystemBar(this, R.color.actionTitle);
+
+        bugUserName.setText(cache.getUser().getData().getUser().getName());
         centerDialog = new CenterDialog(this, R.layout.confirm_dialog,
                 new int[]{R.id.dialog_cancel, R.id.dialog_sure});
         centerDialog.setOnCenterItemClickListener(this);

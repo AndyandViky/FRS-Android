@@ -1,16 +1,16 @@
 package com.example.yanglin.arcface.models;
 
-public class InfoCount {
+public class Base2Response {
 
     /**
      * code : 1
      * msg : 成功
-     * data : 10
+     * data : "10"
      */
 
     private int code;
     private String msg;
-    private int data;
+    private String data;
 
     public int getCode() {
         return code;
@@ -28,11 +28,11 @@ public class InfoCount {
         this.msg = msg;
     }
 
-    public int getData() {
+    public String getData() {
         return data;
     }
 
-    public void setData(int data) {
+    public void setData(String data) {
         this.data = data;
     }
 }

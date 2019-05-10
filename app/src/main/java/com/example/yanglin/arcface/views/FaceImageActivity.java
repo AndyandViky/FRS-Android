@@ -143,6 +143,21 @@ public class FaceImageActivity extends CameraUtil implements  CenterDialog.OnCen
     }
 
     @Override
+    protected void updateSuccess() {
+        super.updateSuccess();
+        currentIndex = -1;
+        getFaceImage(currentIndex, true);
+        (FaceImageActivity.this).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                clearStyle();
+                textAll.setTextColor(borderColor);
+                borderAll.setBackgroundColor(borderColor);
+            }
+        });
+    }
+
+    @Override
     public void OnCenterItemClick(CenterDialog dialog, View view) {
         switch (view.getId()) {
             case R.id.face_cancel:

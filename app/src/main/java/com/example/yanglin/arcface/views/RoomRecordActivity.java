@@ -40,7 +40,7 @@ public class RoomRecordActivity extends AppCompatActivity {
     UserCtrl userCtrl = new UserCtrl();
 
     int pageNo = 1;
-    int pageSize = 5;
+    int pageSize = 10;
     int totalCount = 0;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

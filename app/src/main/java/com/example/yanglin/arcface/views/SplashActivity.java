@@ -12,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 
 
 import com.example.yanglin.arcface.R;
+import com.example.yanglin.arcface.models.User;
+import com.example.yanglin.arcface.utils.Cache;
 import com.example.yanglin.arcface.utils.systemBar.SystemBarUI;
 
 
@@ -22,16 +24,22 @@ import com.example.yanglin.arcface.utils.systemBar.SystemBarUI;
 public class SplashActivity extends AppCompatActivity{
     protected Handler mHandler = new Handler();
 
-
+    Cache cache = new Cache();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         SystemBarUI.initSystemBar(this, R.color.actionTitle);
+
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                User user = cache.getUser(getFilesDir());
+                if(user != null) {
+                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                } else {
+                    startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+                }
                 SplashActivity.this.finish();
             }
         },3000);

@@ -45,7 +45,7 @@ public class CommunityActivity extends AppCompatActivity {
     Community community;
 
     int pageNo = 1;
-    int pageSize = 5;
+    int pageSize = 10;
     int totalCount = 0;
 
     int currentIndex = 0;
@@ -78,6 +78,23 @@ public class CommunityActivity extends AppCompatActivity {
     @OnClick(R.id.commmunity_back)
     void backMain() {
         CommunityActivity.this.finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // 退出文章页面进行推荐
+        userCtrl.updateRecommond(okHttpClient, new OkhttpService.OnResponseListener() {
+            @Override
+            public void onSuccess(String result) {
+
+            }
+
+            @Override
+            public void onFailure(IOException error) {
+
+            }
+        });
     }
 
     void getArticles(final int pageNo, int pageSize, String category) {

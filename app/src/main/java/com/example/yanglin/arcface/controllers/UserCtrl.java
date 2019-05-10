@@ -65,4 +65,34 @@ public class UserCtrl extends OkhttpService{
         String url = baseUrl + "/behavior";
         this.doPost(okHttpClient, url, data, listener);
     }
+
+    public void updateRecommond(OkHttpClient okHttpClient, OnResponseListener listener) {
+        String url = baseUrl + "/recommond";
+        this.doPut(okHttpClient, url, "", listener);
+    }
+
+    public void addNewFaceModel(OkHttpClient okHttpClient, String data, OnResponseListener listener) {
+        String url = baseUrl + "/face";
+        this.doPost(okHttpClient, url, data, listener);
+    }
+
+    public void login(OkHttpClient okHttpClient, String data, OnResponseListener listener) {
+        String url = "/login";
+        this.doPost(okHttpClient, url, data, listener);
+    }
+
+    public void getToken(OkHttpClient okHttpClient, int id, OnResponseListener listener) {
+        String url = "/test/jwt?selfId=" + id;
+        this.doGet(okHttpClient, url, listener);
+    }
+
+    public void changeUserInfo(OkHttpClient okHttpClient, String data, OnResponseListener listener) {
+        String url = "/user";
+        this.doPut(okHttpClient, url, data, listener);
+    }
+
+    public void updatePassword(OkHttpClient okHttpClient, String data, OnResponseListener listener) {
+        String url = "/password";
+        this.doPut(okHttpClient, url, data, listener);
+    }
 }

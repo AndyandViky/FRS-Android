@@ -2,6 +2,7 @@ package com.example.yanglin.arcface.utils.camera;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.Dialog;
 import android.content.ContentUris;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -20,17 +21,15 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.yanglin.arcface.controllers.AttachmentCtrl;
+import com.example.yanglin.arcface.controllers.UserCtrl;
 import com.example.yanglin.arcface.models.Attachment;
 import com.example.yanglin.arcface.models.BaseResponse;
 import com.example.yanglin.arcface.utils.BitmapUtils;
 import com.example.yanglin.arcface.utils.Enums;
-import com.example.yanglin.arcface.utils.LoaddingDialog;
 import com.example.yanglin.arcface.utils.OkhttpService;
-import com.example.yanglin.arcface.views.FaceImageActivity;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 
@@ -50,6 +49,10 @@ public class CameraUtil extends AppCompatActivity{
     private Bitmap attachmentImage = null;
 
     ImageView imageView = null;
+
+    OkHttpClient okHttpClient = new OkHttpClient();
+    private Dialog Loadding;
+    UserCtrl userCtrl = new UserCtrl();
 
     protected void openCamera(Enums.Camera type, ImageView view) {
         imageView = view;
@@ -141,6 +144,7 @@ public class CameraUtil extends AppCompatActivity{
                                         Toast.makeText(CameraUtil.this, "上传成功", Toast.LENGTH_SHORT).show();
                                     }
                                 });
+                                updateOtherByType(attachment.getData().getId());
                             }
 
                             @Override
@@ -153,18 +157,6 @@ public class CameraUtil extends AppCompatActivity{
                                 });
                             }
                         });
-//                        switch (this.type) {
-//                            case UPLOADFACE:
-//                                break;
-//                            case UPLOADVISITOR:
-//                                break;
-//                            case UPLOADBUG:
-//                                break;
-//                            case UPLOADAVATAR:
-//                                break;
-//                            default:
-//                                break;
-//                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -257,6 +249,7 @@ public class CameraUtil extends AppCompatActivity{
                             Toast.makeText(CameraUtil.this, "上传成功", Toast.LENGTH_SHORT).show();
                         }
                     });
+                    updateOtherByType(attachment.getData().getId());
                 }
 
                 @Override
@@ -269,18 +262,6 @@ public class CameraUtil extends AppCompatActivity{
                     });
                 }
             });
-//            switch (this.type) {
-//                case UPLOADFACE:
-//                    break;
-//                case UPLOADVISITOR:
-//                    break;
-//                case UPLOADBUG:
-//                    break;
-//                case UPLOADAVATAR:
-//                    break;
-//                default:
-//                    break;
-//            }
         } else {
             Toast.makeText(this, "failed to get image", Toast.LENGTH_SHORT).show();
         }
@@ -295,6 +276,65 @@ public class CameraUtil extends AppCompatActivity{
 
     protected void deltePath() {
         imageUrl = "";
+    }
+
+    protected void setType(Enums.Camera type) {
+        this.type = type;
+    }
+
+    protected void updateSuccess() {
+
+    }
+
+    private void updateOtherByType(int attId) {
+        switch (this.type) {
+            case UPLOADFACE:
+                userCtrl.addNewFaceModel(okHttpClient, "{\"attId\": \""+attId+"\"}", new OkhttpService.OnResponseListener() {
+                    @Override
+                    public void onSuccess(String result) {
+                        java.lang.reflect.Type type = new TypeToken<BaseResponse>() {}.getType();
+                        final BaseResponse baseResponse = new Gson().fromJson(result, type);
+                        if (baseResponse.getCode() != 1) {
+                            (CameraUtil.this).runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(CameraUtil.this, baseResponse.getMsg(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                            return;
+                        }
+                        // 更新成功
+                        (CameraUtil.this).runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(CameraUtil.this, "更新成功", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        updateSuccess();
+                    }
+
+                    @Override
+                    public void onFailure(IOException error) {
+                        (CameraUtil.this).runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(CameraUtil.this, "添加失败，网络异常", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
+                break;
+            case UPLOADVISITOR:
+                Toast.makeText(this, "visitor", Toast.LENGTH_SHORT).show();
+                break;
+            case UPLOADBUG:
+                Toast.makeText(this, "debug", Toast.LENGTH_SHORT).show();
+                break;
+            case UPLOADAVATAR:
+                break;
+            default:
+                break;
+        }
     }
 
 }

@@ -1,11 +1,12 @@
 package com.example.yanglin.arcface.utils;
 
-import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
+
+import com.example.yanglin.arcface.controllers.UserCtrl;
+import com.example.yanglin.arcface.models.User;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,14 +36,15 @@ public class OkhttpService {
         void onFailure(IOException error);
     }
 
+    Cache cache = new Cache();
     MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     public static final String TAG = "1";
     public static String basePath = "http://192.168.1.172:8000";
-    private static String auth = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZWxmSWQiOjU5NSwidHlwZSI6NCwiaWF0IjoxNTU2MzQ0MDg1LCJleHAiOjE1NTcyMDgwODV9.82RAZLO3MRna-PG2eVhhFvLLjxYHXvH8PeCMq-5rZxc";
+
     protected String doGet(OkHttpClient okHttpClient, String url, final OnResponseListener listener) {
         url = basePath+url;
         Request request = new Request.Builder()
-                .header("authorization", auth)
+                .header("authorization", cache.getToken())
                 .url(url)
                 .build();
         okHttpClient.newCall(request).enqueue(new Callback() {
@@ -55,7 +57,14 @@ public class OkhttpService {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                listener.onSuccess(response.body().string());
+                String result = response.body().string();
+                int index1 = result.indexOf("调用失败");
+                int index2 = result.indexOf("JsonWebToken");
+                if(index1 != -1 || index2 != -1) {
+                    cache.refreshToken(cache.getUser());
+                    return;
+                }
+                listener.onSuccess(result);
             }
         });
         return null;
@@ -66,7 +75,7 @@ public class OkhttpService {
         RequestBody body = RequestBody.create(JSON, data);
 
         Request request = new Request.Builder()
-                .header("authorization", auth)
+                .header("authorization", cache.getToken())
                 .url(url)
                 .post(body)
                 .build();
@@ -81,7 +90,14 @@ public class OkhttpService {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                listener.onSuccess(response.body().string());
+                String result = response.body().string();
+                int index1 = result.indexOf("调用失败");
+                int index2 = result.indexOf("JsonWebToken");
+                if(index1 != -1 || index2 != -1) {
+                    cache.refreshToken(cache.getUser());
+                    return;
+                }
+                listener.onSuccess(result);
             }
         });
         return null;
@@ -92,7 +108,7 @@ public class OkhttpService {
         RequestBody body = RequestBody.create(JSON, data);
 
         Request request = new Request.Builder()
-                .header("authorization", auth)
+                .header("authorization", cache.getToken())
                 .url(url)
                 .put(body)
                 .build();
@@ -107,7 +123,14 @@ public class OkhttpService {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                listener.onSuccess(response.body().string());
+                String result = response.body().string();
+                int index1 = result.indexOf("调用失败");
+                int index2 = result.indexOf("JsonWebToken");
+                if(index1 != -1 || index2 != -1) {
+                    cache.refreshToken(cache.getUser());
+                    return;
+                }
+                listener.onSuccess(result);
             }
         });
         return null;
@@ -118,7 +141,7 @@ public class OkhttpService {
         RequestBody body = RequestBody.create(JSON, data);
 
         Request request = new Request.Builder()
-                .header("authorization", auth)
+                .header("authorization", cache.getToken())
                 .url(url)
                 .delete(body)
                 .build();
@@ -133,7 +156,14 @@ public class OkhttpService {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                listener.onSuccess(response.body().string());
+                String result = response.body().string();
+                int index1 = result.indexOf("调用失败");
+                int index2 = result.indexOf("JsonWebToken");
+                if(index1 != -1 || index2 != -1) {
+                    cache.refreshToken(cache.getUser());
+                    return;
+                }
+                listener.onSuccess(result);
             }
         });
         return null;
@@ -148,7 +178,7 @@ public class OkhttpService {
                 .addFormDataPart("file", path, fileBody)
                 .build();
         Request request = new Request.Builder()
-                .header("authorization", auth)
+                .header("authorization", cache.getToken())
                 .url(url)
                 .post(requestBody)
                 .build();
@@ -169,13 +199,20 @@ public class OkhttpService {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                listener.onSuccess(response.body().string());
+                String result = response.body().string();
+                int index1 = result.indexOf("调用失败");
+                int index2 = result.indexOf("JsonWebToken");
+                if(index1 != -1 || index2 != -1) {
+                    cache.refreshToken(cache.getUser());
+                    return;
+                }
+                listener.onSuccess(result);
             }
         });
         return null;
     }
 
-    public static Bitmap returnBitMap(String url, Handler handler) {
+    public Bitmap returnBitMap(String url, Handler handler) {
         URL myFileUrl = null;
         Bitmap bitmap = null;
         try {
@@ -186,7 +223,7 @@ public class OkhttpService {
         try {
             HttpURLConnection conn = (HttpURLConnection) myFileUrl
                     .openConnection();
-            conn.setRequestProperty("Authorization", auth);
+            conn.setRequestProperty("Authorization", cache.getToken());
             conn.setRequestProperty("Content-type", "application/json");
             conn.setDoInput(true);
             conn.connect();
