@@ -22,6 +22,7 @@ import com.example.yanglin.arcface.views.FaceImageActivity;
 import com.example.yanglin.arcface.views.InfoActivity;
 import com.example.yanglin.arcface.views.LoginActivity;
 import com.example.yanglin.arcface.views.UpdatePwdActivity;
+import com.example.yanglin.arcface.views.UpdatePwdList;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -101,7 +102,7 @@ public class MyFragment extends Fragment{
 
     @OnClick(R.id.change_pwd_button)
     void getChangePwd() {
-        Intent intent = new Intent(getActivity(), UpdatePwdActivity.class);
+        Intent intent = new Intent(getActivity(), UpdatePwdList.class);
         startActivity(intent);
     }
 

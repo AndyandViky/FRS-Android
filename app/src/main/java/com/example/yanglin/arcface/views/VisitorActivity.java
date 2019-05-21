@@ -101,7 +101,7 @@ public class VisitorActivity extends AppCompatActivity {
     }
     @OnClick(R.id.visitor_passed)
     void clickPassed() {
-        currentStatus = 1;
+        currentStatus = 3;
         pageNo = 1;
         getVisitorHttp(pageNo, pageSize, currentStatus);
         clearStyle();

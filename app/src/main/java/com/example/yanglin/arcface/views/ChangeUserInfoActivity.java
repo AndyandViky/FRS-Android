@@ -18,6 +18,7 @@ import com.example.yanglin.arcface.views.dialog.CenterDialog;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,9 +40,13 @@ public class ChangeUserInfoActivity extends AppCompatActivity implements  Center
     EditText userGender;
     @BindView(R.id.user_email_edit)
     EditText userEmail;
+    @BindView(R.id.user_age_edit)
+    EditText userAge;
 
     UserCtrl userCtrl = new UserCtrl();
     OkHttpClient okHttpClient = new OkHttpClient();
+
+    String REGEX_EMAIL = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,6 +60,7 @@ public class ChangeUserInfoActivity extends AppCompatActivity implements  Center
         String ageStr = user.getData().getUser().getGender() == 0 ? "男" : "女";
         userGender.setText(ageStr);
         userEmail.setText(user.getData().getUser().getEmail());
+        userAge.setText(String.valueOf(user.getData().getUser().getAge()));
 
         centerDialog = new CenterDialog(this, R.layout.confirm_dialog,
                 new int[]{R.id.dialog_cancel, R.id.dialog_sure});
@@ -76,6 +82,29 @@ public class ChangeUserInfoActivity extends AppCompatActivity implements  Center
     public void OnCenterItemClick(CenterDialog dialog, View view) {
         switch (view.getId()) {
             case R.id.dialog_sure:
+                String email = userEmail.getText().toString().trim();
+                int age = Integer.parseInt(userAge.getText().toString().trim());
+                int gender = userGender.getText().toString().trim().equals("男") ? 0 : 1;
+                String name = userName.getText().toString().trim();
+                if(name.isEmpty() || email.isEmpty()) {
+                    Toast.makeText(ChangeUserInfoActivity.this, "输入不能为空", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(age <= 0 || age >= 100) {
+                    Toast.makeText(ChangeUserInfoActivity.this, "年龄不能小于0且不能大于100", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(!Pattern.matches(REGEX_EMAIL, email)) {
+                    Toast.makeText(ChangeUserInfoActivity.this, "邮箱格式不正确", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                User user = cache.getUser();
+                user.getData().getUser().setAge(age);
+                user.getData().getUser().setEmail(email);
+                user.getData().getUser().setGender(gender);
+                user.getData().getUser().setName(name);
+                cache.setUser(new Gson().toJson(user));
 //                userCtrl.changeUserInfo(okHttpClient, new Gson().toJson(), new OkhttpService.OnResponseListener() {
 //                    @Override
 //                    public void onSuccess(String result) {

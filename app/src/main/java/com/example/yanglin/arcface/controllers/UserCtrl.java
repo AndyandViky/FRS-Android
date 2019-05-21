@@ -95,4 +95,9 @@ public class UserCtrl extends OkhttpService{
         String url = "/password";
         this.doPut(okHttpClient, url, data, listener);
     }
+
+    public void updateSelfPassword(OkHttpClient okHttpClient, String data, OnResponseListener listener) {
+        String url = baseUrl + "/self/password";
+        this.doPut(okHttpClient, url, data, listener);
+    }
 }

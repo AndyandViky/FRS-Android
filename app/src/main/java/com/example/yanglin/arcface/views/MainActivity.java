@@ -196,7 +196,7 @@ public class MainActivity extends AppCompatActivity  implements CenterDialog.OnC
         switch (view.getId()) {
             case R.id.dialog_sure_pwd:
                 passwordD = centerDialog.findViewById(R.id.password_dialog_edit);
-                String pwd = passwordD.getText().toString();
+                String pwd = passwordD.getText().toString().trim();
                 if (pwd.isEmpty()) {
                     Toast.makeText(MainActivity.this, "密码不能为空", Toast.LENGTH_SHORT).show();
                     return;

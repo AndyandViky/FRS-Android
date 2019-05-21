@@ -72,7 +72,7 @@ public class VisitorAdapter extends RecyclerView.Adapter<VisitorViewHolder> impl
         String createTime = visitor.getCreated_at();
 
         //将position保存在itemView的Tag中，以便点击时进行获取
-        holder.itemView.setTag(visitor.getVisitor_id());
+        holder.itemView.setTag(visitor.getVisitor_id() + ":" + visitor.getId());
         holder.name.setText("访客: "+visitor.getPeople().getName());
         Object phone = visitor.getPeople().getPhone();
         if(phone instanceof String) {
@@ -140,6 +140,7 @@ class VisitorViewHolder extends RecyclerView.ViewHolder implements CenterDialog.
     OkHttpClient okHttpClient = new OkHttpClient();
     UserCtrl userCtrl = new UserCtrl();
     int visitorId;
+    int id;
 
     public VisitorViewHolder(final View itemView) {
         super(itemView);
@@ -154,7 +155,10 @@ class VisitorViewHolder extends RecyclerView.ViewHolder implements CenterDialog.
             public void onClick(View view) {
                 String type = statusButton.getText().toString();
                 if(type!= null && type.equals("审核")) {
-                    visitorId = (int) itemView.getTag();
+                    String tag = (String)itemView.getTag();
+                    String[] tags = tag.split(":");
+                    visitorId = Integer.parseInt(tags[0]);
+                    id = Integer.parseInt(tags[1]);
                     centerDialog.show();
                 }
             }
@@ -166,7 +170,7 @@ class VisitorViewHolder extends RecyclerView.ViewHolder implements CenterDialog.
         switch (view.getId()) {
             case R.id.dialog_sure:
                 dialog.dismiss();
-                userCtrl.approveVisite(okHttpClient, "{\"visitorId\": \""+visitorId+"\"}", new OkhttpService.OnResponseListener() {
+                userCtrl.approveVisite(okHttpClient, "{\"visitorId\": \""+visitorId+"\", \"id\": \""+id+"\"}", new OkhttpService.OnResponseListener() {
                     @Override
                     public void onSuccess(String result) {
                         statusButton.post(new Runnable() {

@@ -60,7 +60,7 @@
                         android:paddingLeft="10dp"
                         android:gravity="center"
                         android:textSize="14sp"
-                        android:text="北京市幸福小区"
+                        android:text="幸福花园小区"
                         />
                 </RelativeLayout>
                 <View

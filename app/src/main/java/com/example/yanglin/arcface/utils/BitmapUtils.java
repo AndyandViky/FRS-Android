@@ -91,7 +91,7 @@ public class BitmapUtils {
         //图片名
         String filename = format.format(date);
 
-        File file = new File(Environment.getExternalStorageDirectory(), filename + ".png");
+        File file = new File(Environment.getExternalStorageDirectory(), filename + ".jpg");
         try {
             FileOutputStream fos = new FileOutputStream(file);
             try {

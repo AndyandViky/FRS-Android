@@ -26,6 +26,11 @@ public class Cache extends AppCompatActivity {
         createPrivateFile(filename, text, file);
     }
 
+    public void setUser(String text) {
+        File parentFile = new File(baseDir);
+        createPrivateFile(filename, text, parentFile);
+    }
+
     public void deleteUser() {
         deletePrivateFile(filename);
     }
